@@ -1,12 +1,12 @@
 # EdTech ML Service - Answer Grader
 
 ## Architecture & Code Quality
-This service hosts the `LogisticRegression` classifier that evaluates textual semantic similarity between student answers and teacher reference answers.
+This service hosts the `LogisticRegression` classifier that evaluates textual semantic similarity.
 
-The repository aligns with high industry standards and production readiness (10/10 Rubric Requirements):
+The repository follows standard software engineering practices:
 - **Modular Structure**: Logic is cleanly separated into routing (`main.py`), ML classes (`model.py`), and heuristic helpers (`utils.py`).
-- **Idempotency**: The model caches the trained weights in `data/model.pkl` to prevent redundant Hugging Face downloads.
-- **Robust Typing**: Type hints and Pydantic validation are actively utilized across all components.
+- **Idempotency**: The model caches the trained weights in `data/model.pkl` to prevent redundant downloads.
+- **Robust Typing**: Type hints and Pydantic validation are utilized across all components.
 
 ## Running the Service
 1. Install dependencies:

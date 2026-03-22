@@ -1,10 +1,8 @@
-# %% [markdown]
-# # =========================================================
-# # ANALYTIC REPORT: Automated EdTech Grading Assistant
-# # 10/10 Rubric Achievement Script (Advanced EDA)
+# % # ANALYTIC REPORT: Automated EdTech Grading Assistant
+# # Advanced Dataset Characterization & Manifold Analysis
 # # =========================================================
 # 
-# This notebook documents the 10-point EDA framework and advanced manifold
+# This notebook documents the core analytical framework and advanced manifold
 # justifications for our multi-dimensional semantic feature pipeline.
 
 # %%
@@ -59,7 +57,7 @@ X = np.array(X_list)
 y = np.array(y_list)
 
 # ---------------------------
-# 12. PCA VISUAL PROOF (RUBRIC 10/10 🔥)
+# 12. PCA VISUAL PROOF
 # ---------------------------
 # Projecting features to 2D to visually confirm separability
 print("--- 12. Calculating PCA Projection ---")

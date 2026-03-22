@@ -1,5 +1,5 @@
-# Configuration for Reproducibility and Modularity
-# Hits the "Code Quality / 10" Rubric Requirement
+# Configuration settings for the Automated EdTech Assistant
+# Centralized hyperparameters and file paths
 
 DATASET_NAME = "nkazi/SciEntsBank"
 

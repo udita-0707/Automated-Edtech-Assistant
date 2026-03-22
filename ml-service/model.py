@@ -10,8 +10,8 @@ import config
 
 class TextClassifier:
     """
-    Rubric 10/10: Final Merged Framework
-    Combines User's Structural Features with Advanced Semantic Manifolds.
+    Final Integrated Framework
+    Combines Structural Features with Semantic Manifold analysis.
     """
 
     def __init__(self, max_features=config.MAX_FEATURES):

@@ -7,16 +7,16 @@
 ## Problem Motivation
 Evaluating student short-text responses is traditionally qualitative and subjective. The **Automated EdTech Grading Assistant** provides an algorithmic quantitative assessment using a specialized Machine Learning pipeline. Our solution focuses on **Explainable AI (XAI)** by utilizing clear mathematical boundaries to detect academic correctness, rather than functioning as a black-box large language model.
 
-## Method & Approach (Phase 1 Rubric Aligned)
-This repository satisfies the rigorous standards defined by standard academic grading rubrics across Literature Review, Feature Engineering, and Model Architecture:
+## Method & Approach
+This repository implements a rigorous Machine Learning pipeline for automated grading:
 
-1. **Literature-Backed Baselines & EDA**: We analyzed the `nkazi/SciEntsBank` dataset containing over 4,900 academic records. Our final framework achieves **~62% Accuracy** on unseen evaluation splits using a rigorous 3-way categorical reduction (Rubric 10/10).
-2. **Integrated Feature Breakthrough**: 
-   - **User Features**: Word Count, Answer Length, Avg Word Length.
-   - **Semantic Features**: Jaccard Similarity (Lexical Overlap) and Token Match Density.
+1. **Dataset Analysis & Preprocessing**: We utilized the `nkazi/SciEntsBank` dataset containing over 4,900 academic records. Our framework achieves **~62% Accuracy** on unseen evaluation splits using a strategic 3-way categorical reduction.
+2. **Feature Engineering**: 
+   - **Structural Metrics**: Word Count, Answer Length, Avg Word Length.
+   - **Semantic Features**: Jaccard Similarity and Token Match Density.
    - **N-gram Representation**: TF-IDF Bigrams for local contextual cues.
 3. **Model Selection**: A transparent `LogisticRegression` classifier with `class_weight="balanced"` to handle dataset imbalance.
-4. **Clean Code & Modularity**: A production-ready 3-tier architecture with full environment auto-configuration (`.vscode/settings.json`) and specific `config.py` for hyperparameter isolation.
+4. **Clean Code & Modularity**: A production-ready 3-tier architecture with centralized configuration (`config.py`).
 
 ---
 
@@ -24,20 +24,19 @@ This repository satisfies the rigorous standards defined by standard academic gr
 
 ```
 Automated-Edtech-Assistant/
-├── frontend/             # Single Page Application (React + Vite + Tailwind v4)
-├── backend/              # Node.js + Express API Gateway and SQLite Persistence
-├── ml-service/           # Microservice handling model training and vectorization
-│   ├── data/             # Cached model binaries (e.g., model.pkl)
-│   ├── main.py           # FastAPI Routing boundaries
-│   ├── model.py          # Machine Learning Class definition
-│   ├── utils.py          # Text vectorization & NLP heuristics
-│   ├── requirements.txt  # Python pip dependencies
-│   └── README.md         # Microservice API Documentation
-├── notebooks/
-│   └── eda.py            # Executable Exploratory Data Analysis script
-├── report/
-│   └── main.tex          # LaTeX Project documentation ready for compilation
-├── README.md             # This file
+├── frontend/             # React + Vite + Tailwind v4 Web Application
+├── backend/              # Node.js + Express API Gateway
+├── ml-service/           # Python FastAPI ML Microservice
+│   ├── data/             # Persistent Model Binaries
+│   ├── main.py           # API Controller
+│   ├── model.py          # ML Core & Vectorization
+│   ├── utils.py          # NLP Heuristics & EDA Logic
+│   ├── config.py         # Hyperparameters & Paths
+│   ├── requirements.txt  # Dependencies
+│   └── README.md         # Service Documentation
+├── notebooks/            # Data Visualizations & Analysis
+├── report/               # Academic Project Documentation (LaTeX)
+└── README.md             # Project Overview
 ```
 
 ---

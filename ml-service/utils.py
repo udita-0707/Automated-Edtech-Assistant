@@ -22,8 +22,8 @@ def load_scientsbank():
 
 def convert_labels(dataset, scheme=config.LABEL_SCHEME):
     """
-    Rubric 10/10: Strategic Dataset Binning
-    Maps 5-way labels to 3-way based on academic rigor:
+    Strategic Dataset Binning
+    Maps 5-way labels to 3-way based on academic grading standards:
     0: correct, 1: contradictory, 2: incorrect (others)
     """
     if scheme == "3way":

@@ -11,7 +11,7 @@ def main():
     dataset = convert_labels(dataset, config.LABEL_SCHEME)
 
     # 2. EDA (Saves to notebooks/ directory)
-    # This hits the 10/10 EDA Rubric
+    # Generates comprehensive data visualizations
     perform_eda(dataset)
 
     # 3. COMPREHENSIVE EVALUATION (UA, UQ, UD splits)
