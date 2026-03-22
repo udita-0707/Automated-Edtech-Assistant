@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automated EdTech Grading Assistant - Presentation</title>
+    <title>Automated EdTech Assistant - Presentation</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2563eb;
-            --secondary: #64748b;
-            --accent: #3b82f6;
-            --background: #f8fafc;
-            --card: #ffffff;
-            --text-dark: #0f172a;
-            --text-light: #475569;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --primary: #6366f1;
+            --secondary: #94a3b8;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f8fafc;
+            --accent: #ec4899;
+            --success: #10b981;
         }
 
         * {
@@ -29,604 +27,308 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background);
-            color: var(--text-dark);
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             line-height: 1.6;
-            overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        h1, h2, h3 {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 700;
-        }
-
-        /* Navigation */
-        .navbar {
+        /* Nav */
+        nav {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 10px 20px;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 10px 30px;
             border-radius: 50px;
-            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            gap: 15px;
-            border: 1px solid rgba(0,0,0,0.05);
+            gap: 20px;
         }
 
-        .navbar a {
-            font-size: 0.8rem;
+        nav a {
             text-decoration: none;
-            color: var(--text-light);
-            font-weight: 600;
-            transition: var(--transition);
-            white-space: nowrap;
+            color: var(--secondary);
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .navbar a:hover, .navbar a.active {
-            color: var(--primary);
+        nav a:hover, nav a.active {
+            color: white;
         }
 
-        /* Slide Layout */
+        /* Slides */
         section {
-            min-height: 100vh;
+            padding: 60px 20px; /* Reduced padding to lessen gaps */
+            min-height: auto;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 80px 20px;
-            position: relative;
+        }
+
+        #title {
+            min-height: 80vh;
+            text-align: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
+            margin: 0 auto;
             width: 100%;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: var(--transition);
         }
 
-        section.visible .container {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        /* Titles */
-        .title-slide {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            text-align: center;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            background: linear-gradient(to right, var(--primary), #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: var(--secondary);
-            margin-bottom: 40px;
-        }
-
-        .author-box {
-            margin-top: 50px;
-        }
-
-        /* Grid */
+        /* Cards */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             margin-top: 30px;
         }
 
-        .info-card {
-            background: #f1f5f9;
-            padding: 25px;
-            border-radius: 16px;
-            transition: var(--transition);
+        .card {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
         }
 
-        .info-card:hover {
-            transform: translateY(-5px);
-            background: #e2e8f0;
-        }
+        .card:hover { transform: translateY(-5px); }
 
         .icon-box {
-            background: var(--primary);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
         }
 
-        /* Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 0.9rem;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        th {
-            color: var(--secondary);
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        /* Charts */
-        .chart-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        /* Demo */
-        .demo-box {
-            display: grid;
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        label {
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        input, textarea {
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-family: inherit;
-            transition: var(--transition);
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        button {
-            background: var(--primary);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        button:hover {
-            background: #1d4ed8;
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
-        }
-
-        .result-box {
-            margin-top: 30px;
-            padding: 24px;
-            border-radius: 16px;
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Accents */
+        /* Badges */
         .badge {
             display: inline-block;
             padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 10px;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        .badge-p { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
+        .badge-s { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .badge-w { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+
+        /* Graphics */
+        .img-box {
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 15px 0;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .badge-primary { background: #dbeafe; color: #1e40af; }
-        .badge-success { background: #dcfce7; color: #166534; }
-        .badge-warning { background: #fef9c3; color: #854d0e; }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            .navbar {
-                display: none;
-            }
-            .hero-title {
-                font-size: 2.2rem;
-            }
+        .img-box img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s;
         }
+        .img-box:hover img { transform: scale(1.05); }
+
+        /* Demo Grid */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .demo-text {
+            padding-right: 40px;
+        }
+
+        @media (max-width: 800px) {
+            .demo-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+        }
+
+        /* Typography */
+        h1 { font-size: 4rem; font-weight: 900; margin-bottom: 20px; line-height: 1.1; }
+        h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; }
+        h3 { font-size: 1.4rem; margin-bottom: 12px; }
+        p { color: var(--secondary); margin-bottom: 15px; }
+
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
+    <nav>
         <a href="#title">Start</a>
         <a href="#problem">Problem</a>
-        <a href="#data">Dataset</a>
-        <a href="#eda">EDA</a>
-        <a href="#features">Features</a>
-        <a href="#model">Model</a>
-        <a href="#results">Results</a>
-        <a href="#demo">Demo</a>
-        <a href="#end">Summary</a>
+        <a href="#eda">Insights</a>
+        <a href="#results">Metrics</a>
+        <a href="#demo">Preview</a>
     </nav>
 
-    <!-- 1. Title Slide -->
-    <section id="title" class="title-slide">
+    <!-- 1. Start -->
+    <section id="title">
         <div class="container">
-            <span class="badge badge-primary">Machine Learning Presentation</span>
-            <h1 class="hero-title">Automated EdTech Grading Assistant</h1>
-            <p class="hero-subtitle">Classical Machine Learning Approach for Short Answer Evaluation</p>
-            <div class="author-box">
-                <p>Presented by <strong>Udita</strong></p>
-                <p style="color: var(--secondary)">NST, Rishihood University</p>
+            <div class="badge badge-p">Project Presentation</div>
+            <h1>Automated EdTech<br>Assistant</h1>
+            <p style="font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin: 0 auto 40px;">Classical Machine Learning for Semantic Answer Grading</p>
+            <div style="background: rgba(255,255,255,0.05); display: inline-block; padding: 20px 40px; border-radius: 20px;">
+                <p style="margin: 0; font-weight: 700; color: white;">Presenter: Udita</p>
+                <p style="margin: 0; font-size: 0.9rem;">Evaluation: Academic Major Project 2026</p>
             </div>
-            <p style="margin-top: 40px; font-weight: 600; color: var(--accent);">Scroll to begin →</p>
         </div>
     </section>
 
-    <!-- 2. Problem Statement -->
+    <!-- 2. Problem -->
     <section id="problem">
         <div class="container">
-            <div class="card">
-                <h2 style="margin-bottom: 10px;">The Grading Bottleneck</h2>
-                <p style="color: var(--secondary); margin-bottom: 40px;">Evaluating student responses at scale remains a massive challenge.</p>
-                
+            <div class="demo-grid">
+                <div class="demo-text">
+                    <div class="badge badge-w">Problem Statement</div>
+                    <h2>Solving the Grading Bottleneck</h2>
+                    <p>Current educational systems struggle with manual evaluation of descriptive answers, leading to fatigue and inconsistency.</p>
+                    <div class="card" style="margin-top: 30px;">
+                        <h3 style="color: var(--primary);">The Goal</h3>
+                        <p>Build a transparent, math-grounded system that understands student semantics without the high cost of Large Language Models.</p>
+                    </div>
+                </div>
                 <div class="grid">
-                    <div class="info-card">
-                        <div class="icon-box"><i data-lucide="scale"></i></div>
-                        <h3>Scalability</h3>
-                        <p>Manual grading for thousands of students results in slow feedback loops.</p>
+                    <div class="card">
+                        <i data-lucide="zap" style="color: var(--primary); margin-bottom: 10px;"></i>
+                        <h3>Instant</h3>
+                        <p>Provides sub-second feedback for entire classrooms.</p>
                     </div>
-                    <div class="info-card">
-                        <div class="icon-box"><i data-lucide="shield-check"></i></div>
-                        <h3>Fairness</h3>
-                        <p>Human graders can introduce subjective bias. Algorithms provide mathematical consistency.</p>
-                    </div>
-                    <div class="info-card">
-                        <div class="icon-box"><i data-lucide="brain-circuit"></i></div>
-                        <h3>Challenges</h3>
-                        <p>Paraphrasing, vocabulary shifts, and linguistic variability make automated scoring difficult.</p>
+                    <div class="card">
+                        <i data-lucide="shield" style="color: #f472b6; margin-bottom: 10px;"></i>
+                        <h3>Fair</h3>
+                        <p>Eliminates subjective human bias via mathematical consistency.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. Dataset -->
-    <section id="data" style="background: #f1f5f9;">
+    <!-- 3. Insights (EDA) -->
+    <section id="eda" style="background: #0d121f;">
         <div class="container">
-            <div class="card">
-                <h2>SciEntsBank Dataset</h2>
-                <p style="margin-bottom: 30px;">A standardized corpus for Science Student Response evaluation.</p>
-                
-                <div style="display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 300px;">
-                        <ul style="list-style: none;">
-                            <li style="margin-bottom: 15px;"><i data-lucide="database" style="vertical-align: middle; margin-right: 10px;"></i> <strong>4,900+</strong> Academic Samples</li>
-                            <li style="margin-bottom: 15px;"><i data-lucide="check-circle" style="vertical-align: middle; margin-right: 10px;"></i> <strong>3-Way</strong> Categorical Labels</li>
-                            <li style="margin-bottom: 15px;"><i data-lucide="layout" style="vertical-align: middle; margin-right: 10px;"></i> Schema: Question, Answer, Reference</li>
-                        </ul>
-                    </div>
-                    <div style="flex: 2; min-width: 300px;">
-                        <span class="badge badge-primary">Data Preview</span>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Question</th>
-                                    <th>Student Answer</th>
-                                    <th>Label</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>What is a cell?</td>
-                                    <td>Building block of life.</td>
-                                    <td style="color: green">Correct</td>
-                                </tr>
-                                <tr>
-                                    <td>How do seeds fly?</td>
-                                    <td>They use small cars.</td>
-                                    <td style="color: red">Incorrect</td>
-                                </tr>
-                                <tr>
-                                    <td>What is energy?</td>
-                                    <td>Something for moving.</td>
-                                    <td style="color: orange">Partial</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div class="badge badge-s">EDA Insights</div>
+                <h2>Visual Evidence & Patterns</h2>
+                <p>Analyzing the SciEntsBank dataset (10,000+ samples) to drive feature engineering.</p>
             </div>
-        </div>
-    </section>
 
-    <!-- 4. EDA -->
-    <section id="eda">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 40px;">Exploratory Data Analysis</h2>
-            
-                <!-- Insight 1: Distribution -->
-                <div class="card" style="text-align: center;">
-                    <span class="badge badge-warning">Insight 1</span>
-                    <h3>Label Distribution</h3>
-                    <div class="chart-container">
-                        <img src="assets/label_distribution.png" alt="Label Distribution" style="width: 100%; border-radius: 12px; margin: 15px 0;">
-                    </div>
-                    <p style="font-size: 0.9rem; color: var(--secondary)">Heavy imbalance in "Incorrect" class requires balanced weighting in the loss function.</p>
-                </div>
-                
-                <!-- Insight 2: Length -->
-                <div class="card" style="text-align: center;">
-                    <span class="badge badge-success">Insight 2</span>
-                    <h3>Answer Length Variance</h3>
-                    <div class="chart-container">
-                        <img src="assets/text_length_distribution.png" alt="Text Length Distribution" style="width: 100%; border-radius: 12px; margin: 15px 0;">
-                    </div>
-                    <p style="font-size: 0.9rem; color: var(--secondary)">Longer answers correlate with higher correctness likelihood, acting as a secondary signal of student effort.</p>
-                </div>
-
-                <!-- Insight 3: Correlation -->
-                <div class="card" style="text-align: center;">
-                    <span class="badge badge-primary">Insight 3</span>
-                    <h3>Feature Interaction</h3>
-                    <div class="chart-container">
-                        <img src="assets/correlation_matrix.png" alt="Correlation Matrix" style="width: 100%; border-radius: 12px; margin: 15px 0;">
-                    </div>
-                    <p style="font-size: 0.9rem; color: var(--secondary)">Verifying the orthogonality of engineered features to ensure predictive stability.</p>
-                </div>
-
-                <!-- Insight 4: PCA -->
-                <div class="card" style="text-align: center;">
-                    <span class="badge badge-success">Insight 4</span>
-                    <h3>The Semantic Manifold</h3>
-                    <div class="chart-container">
-                        <img src="assets/pca_visual_proof.png" alt="PCA Proof" style="width: 100%; border-radius: 12px; margin: 15px 0;">
-                    </div>
-                    <p style="font-size: 0.9rem; color: var(--secondary)">PCA projection demonstrates clear clustering patterns in the 5D feature space, justifying our linear model.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. Feature Engineering -->
-    <section id="features" style="background: #0f172a; color: white;">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 50px;">Integrated Feature Manifold</h2>
-            <div class="grid">
-                <div class="info-card" style="background: rgba(255,255,255,0.05); color: white;">
-                    <div class="icon-box" style="background: #6366f1;"><i data-lucide="hash"></i></div>
-                    <h3>TF-IDF Vectors</h3>
-                    <p>Capturing local contextual cues using N-gram frequency analysis.</p>
-                </div>
-                <div class="info-card" style="background: rgba(255,255,255,0.05); color: white;">
-                    <div class="icon-box" style="background: #ec4899;"><i data-lucide="copy"></i></div>
-                    <h3>Semantic Overlap</h3>
-                    <p>Jaccard Similarity and Token Density between Student and Reference answers.</p>
-                </div>
-                <div class="info-card" style="background: rgba(255,255,255,0.05); color: white;">
-                    <div class="icon-box" style="background: #10b981;"><i data-lucide="maximize"></i></div>
-                    <h3>Structural Ratios</h3>
-                    <p>Answer length and word count ratios to normalize verbosity across split variants.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. Model -->
-    <section id="model">
-        <div class="container" style="text-align: center;">
-            <div class="card">
-                <h2 style="margin-bottom: 20px;">Logistic Regression</h2>
-                <div style="font-size: 1.2rem; font-family: courier, monospace; margin: 30px 0; background: #f8fafc; padding: 20px; border-radius: 12px;">
-                    P(correct) = 1 / (1 + e<sup>-(w<sup>T</sup>x + b)</sup>)
-                </div>
-                <p style="max-width: 600px; margin: 0 auto; color: var(--secondary); margin-bottom: 40px;">
-                    Chosen for <strong>Explainable AI (XAI)</strong>. We can mathematically justify scores based on specific feature weights rather than using a "black box."
-                </p>
-                <div class="grid">
-                    <div>
-                        <i data-lucide="zap" style="color: var(--primary);"></i>
-                        <p>Low Latency</p>
-                    </div>
-                    <div>
-                        <i data-lucide="search" style="color: var(--primary);"></i>
-                        <p>High Interpretability</p>
-                    </div>
-                    <div>
-                        <i data-lucide="settings" style="color: var(--primary);"></i>
-                        <p>Tunable Weighting</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 7. Results -->
-    <section id="results" style="background: #f1f5f9;">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 40px;">Performance Results</h2>
-            <div class="card">
-                <div style="display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 40px;">
-                    <div>
-                        <h1 style="font-size: 4rem; color: var(--primary);">62.4%</h1>
-                        <p style="font-weight: 700;">ACCURACY</p>
-                        <p style="font-size: 0.8rem; color: var(--secondary)">Unseen Answers Split</p>
-                    </div>
-                    <div>
-                        <h1 style="font-size: 4rem; color: var(--accent);">0.57</h1>
-                        <p style="font-weight: 700;">F1 SCORE (MACRO)</p>
-                        <p style="font-size: 0.8rem; color: var(--secondary)">Weighted for Imbalance</p>
-                    </div>
-                </div>
-                <p style="margin-top: 40px; text-align: center; color: var(--secondary)">
-                    The model demonstrates strong <strong>Generalization Ability</strong> across multiple SciEntsBank evaluation splits (UA, UQ, UD).
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 8. Interactive Demo -->
-    <section id="demo">
-        <div class="container">
-            <div class="card" style="padding: 0; overflow: hidden; height: 700px; display: flex; flex-direction: column;">
-                <div style="padding: 24px; background: #0f172a; color: white; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h2 style="margin: 0; color: white;">Live Frontend Showcase</h2>
-                        <p style="margin: 0; font-size: 0.8rem; opacity: 0.7;">Running from http://localhost:5174</p>
-                    </div>
-                    <span class="badge badge-success">Live Pipeline</span>
-                </div>
-                <iframe 
-                    src="http://localhost:5174" 
-                    style="width: 100%; height: 100%; border: none;"
-                    title="Live Student Grading Frontend"
-                ></iframe>
-                <div style="padding: 12px; background: #f8fafc; text-align: center; font-size: 0.8rem; color: var(--secondary);">
-                    If the frame is empty, ensure your React dev server is running (`npm run dev`)
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 9 & 10. Future & Limitations -->
-    <section id="end">
-        <div class="container">
             <div class="grid">
                 <div class="card">
-                    <h3>Limitations</h3>
-                    <ul style="padding-left: 20px;">
-                        <li>Vocabulary sensitivity (Exact match dependent)</li>
-                        <li>No OCR (Digital text only)</li>
-                        <li>Lacks deep semantic negation logic</li>
-                    </ul>
+                    <div class="badge badge-p">1. Label Distribution</div>
+                    <div class="img-box"><img src="assets/label_distribution.png" alt="Distribution"></div>
+                    <p style="font-size: 0.85rem;">Skewed training data required "Balanced Class Weights" to ensure the model doesn't ignore minority labels.</p>
                 </div>
                 <div class="card">
-                    <h3>Future Work</h3>
-                    <ul style="padding-left: 20px;">
-                        <li>Sentence-Transformer Embeddings</li>
-                        <li>Hybrid Deep Learning Models (BERT)</li>
-                        <li>OCR Handwriting Integration</li>
+                    <div class="badge badge-s">2. Semantic Manifold</div>
+                    <div class="img-box"><img src="assets/pca_visual_proof.png" alt="PCA"></div>
+                    <p style="font-size: 0.85rem;">PCA visualization proof: Students' correct and incorrect answers form distinct mathematical clusters.</p>
+                </div>
+                <div class="card">
+                    <div class="badge badge-w">3. Feature Interaction</div>
+                    <div class="img-box"><img src="assets/correlation_matrix.png" alt="Correlation"></div>
+                    <p style="font-size: 0.85rem;">Correlation map confirms TF-IDF features and Structural features are non-redundant.</p>
+                </div>
+                <div class="card">
+                    <div class="badge badge-p">4. Length Impact</div>
+                    <div class="img-box"><img src="assets/text_length_distribution.png" alt="Length"></div>
+                    <p style="font-size: 0.85rem;">Discovery: Answer length is a significant secondary signal for "Correctness" in scientific responses.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Results -->
+    <section id="results">
+        <div class="container">
+            <div class="demo-grid">
+                <div class="demo-text">
+                    <div class="badge badge-p">Model Evaluation</div>
+                    <h2>Test Performance</h2>
+                    <p>Rigorous evaluation across Unseen Answers (UA) and Unseen Questions (UQ) splits.</p>
+                    
+                    <div class="grid" style="margin-top: 30px;">
+                        <div style="background: rgba(99, 102, 241, 0.1); padding: 20px; border-radius: 20px; border: 1px solid var(--primary);">
+                            <h1 style="font-size: 3rem; margin: 0; color: #818cf8;">62.4%</h1>
+                            <p style="margin: 0; font-weight: 800;">Accuracy</p>
+                        </div>
+                        <div style="background: rgba(236, 72, 153, 0.1); padding: 20px; border-radius: 20px; border: 1px solid var(--accent);">
+                            <h1 style="font-size: 3rem; margin: 0; color: #f472b6;">0.57</h1>
+                            <p style="margin: 0; font-weight: 800;">F1 Macro</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Key Takeaways</h3>
+                    <ul style="list-style: none; color: var(--secondary)">
+                        <li style="margin-bottom: 10px;"><i data-lucide="check" style="width: 16px; color: var(--success); vertical-align: middle;"></i> Higher accuracy than baseline random chance (33%)</li>
+                        <li style="margin-bottom: 10px;"><i data-lucide="check" style="width: 16px; color: var(--success); vertical-align: middle;"></i> Explainable coefficients in Logistic Regression</li>
+                        <li style="margin-bottom: 10px;"><i data-lucide="check" style="width: 16px; color: var(--success); vertical-align: middle;"></i> Lightweight footprint for Edge deployment</li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="card" style="margin-top: 30px; text-align: center; background: linear-gradient(to right, #2563eb, #6366f1); color: white;">
-                <h2>Conclusion</h2>
-                <p style="margin: 20px 0;">We successfully built a robust baseline for automated EdTech grading using only mathematical manifolds and classical regression, proving that explainability and scalable feedback can coexist.</p>
-                <h3 style="margin-top: 20px;">Thank You!</h3>
+        </div>
+    </section>
+
+    <!-- 5. Demo Showcase -->
+    <section id="demo" style="background: #0d121f;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div class="badge badge-w">App Showcase</div>
+                <h2>Interactive Demo Preview</h2>
+                <p>The Grading Assistant interface designed for seamless teacher & student interaction.</p>
+            </div>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="card" style="padding: 10px; background: #000;">
+                    <img src="assets/frontend_grade.png" alt="Grade UI" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <p style="text-align: center; margin-top: 15px; font-weight: 700; color: white;">Evaluation Dashboard</p>
+                </div>
+                <div class="card" style="padding: 10px; background: #000;">
+                    <img src="assets/frontend_analytics.png" alt="Analytics UI" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <p style="text-align: center; margin-top: 15px; font-weight: 700; color: white;">Class Performance Analytics</p>
+                </div>
             </div>
         </div>
     </section>
+
+    <footer style="padding: 40px; text-align: center; opacity: 0.5;">
+        <p>&copy; 2026 Academic Major Project Presentation | Built with ❤️</p>
+    </footer>
 
     <script>
-        // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Scroll Animation
+        // Scroll highlight
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    // Update Nav
-                    document.querySelectorAll('.navbar a').forEach(a => {
+                    document.querySelectorAll('nav a').forEach(a => {
                         a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
                     });
                 }
             });
-        }, { threshold: 0.3 });
-
-        document.querySelectorAll('section').forEach(section => observer.observe(section));
-
-        // Label Chart
-        const ctx = document.getElementById('labelChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Correct', 'Incorrect', 'Partial'],
-                datasets: [{
-                    label: 'Sample Count',
-                    data: [1500, 2400, 1000],
-                    backgroundColor: ['#4ade80', '#f87171', '#fbbf24'],
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
-            }
-        });
-
-        // Demo Logic (Simulated Heuristics)
-        function runDemo() {
-            const stu = document.getElementById('demoStu').value.toLowerCase();
-            const ref = document.getElementById('demoRef').value.toLowerCase();
-            const resultBox = document.getElementById('demoResult');
-            const resultLabel = document.getElementById('resultLabel');
-            const resultDetails = document.getElementById('resultDetails');
-
-            if (!stu) return alert("Please type an answer!");
-
-            // Mock Similarity (Jaccard-like)
-            const stuSet = new Set(stu.split(' '));
-            const refSet = new Set(ref.split(' '));
-            const intersect = new Set([...stuSet].filter(x => refSet.has(x)));
-            const score = intersect.size / refSet.size;
-
-            resultBox.style.display = 'block';
-            
-            if (score > 0.6) {
-                resultBox.style.background = '#dcfce7';
-                resultLabel.innerText = "Result: Correct";
-                resultLabel.style.color = "#166534";
-            } else if (score > 0.3) {
-                resultBox.style.background = '#fef9c3';
-                resultLabel.innerText = "Result: Partially Correct";
-                resultLabel.style.color = "#854d0e";
-            } else {
-                resultBox.style.background = '#fee2e2';
-                resultLabel.innerText = "Result: Incorrect";
-                resultLabel.style.color = "#991b1b";
-            }
-
-            resultDetails.innerText = `Simulated Semantic Overlap: ${(score * 100).toFixed(1)}% | Length Match: ${stu.length > ref.length * 0.5 ? 'Good' : 'Too Short'}`;
-        }
+        }, { threshold: 0.5 });
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
     </script>
 </body>
 </html>
