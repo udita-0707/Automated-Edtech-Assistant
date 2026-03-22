@@ -380,23 +380,46 @@
     <section id="eda">
         <div class="container">
             <h2 style="text-align: center; margin-bottom: 40px;">Exploratory Data Analysis</h2>
+            
             <div class="grid">
+                <!-- Insight 1: Distribution -->
                 <div class="card" style="text-align: center;">
                     <span class="badge badge-warning">Insight 1</span>
                     <h3>Label Distribution</h3>
                     <div class="chart-container">
-                        <canvas id="labelChart"></canvas>
+                        <img src="../notebooks/label_distribution.png" alt="Label Distribution" style="width: 100%; border-radius: 12px; margin: 15px 0;">
                     </div>
-                    <p style="font-size: 0.9rem; color: var(--secondary)">Heavy imbalance in "Incorrect" class requires balanced weighting.</p>
+                    <p style="font-size: 0.9rem; color: var(--secondary)">Heavy imbalance in "Incorrect" class requires balanced weighting in the loss function.</p>
                 </div>
+                
+                <!-- Insight 2: Length -->
                 <div class="card" style="text-align: center;">
                     <span class="badge badge-success">Insight 2</span>
-                    <h3>Answer Length Correlation</h3>
-                    <div style="padding: 40px 0;">
-                        <p style="font-size: 1.2rem; font-weight: 600;">Correct Answers: ~13 words</p>
-                        <p style="font-size: 1.2rem; font-weight: 600; color: #f87171">Incorrect Answers: ~10 words</p>
+                    <h3>Answer Length Variance</h3>
+                    <div class="chart-container">
+                        <img src="../notebooks/text_length_distribution.png" alt="Text Length Distribution" style="width: 100%; border-radius: 12px; margin: 15px 0;">
                     </div>
-                    <p style="font-size: 0.9rem; color: var(--secondary)">Longer answers correlate with higher correctness likelihood.</p>
+                    <p style="font-size: 0.9rem; color: var(--secondary)">Longer answers correlate with higher correctness likelihood, acting as a secondary signal of student effort.</p>
+                </div>
+
+                <!-- Insight 3: Correlation -->
+                <div class="card" style="text-align: center;">
+                    <span class="badge badge-primary">Insight 3</span>
+                    <h3>Feature Interaction</h3>
+                    <div class="chart-container">
+                        <img src="../notebooks/correlation_matrix.png" alt="Correlation Matrix" style="width: 100%; border-radius: 12px; margin: 15px 0;">
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--secondary)">Verifying the orthogonality of engineered features to ensure predictive stability.</p>
+                </div>
+
+                <!-- Insight 4: PCA -->
+                <div class="card" style="text-align: center;">
+                    <span class="badge badge-success">Insight 4</span>
+                    <h3>The Semantic Manifold</h3>
+                    <div class="chart-container">
+                        <img src="../notebooks/pca_visual_proof.png" alt="PCA Proof" style="width: 100%; border-radius: 12px; margin: 15px 0;">
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--secondary)">PCA projection demonstrates clear clustering patterns in the 5D feature space, justifying our linear model.</p>
                 </div>
             </div>
         </div>
