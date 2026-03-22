@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automated EdTech Assistant - Presentation</title>
+    <title>Automated EdTech Assistant - Final Presentation</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,18 +43,18 @@
             z-index: 1000;
             background: rgba(30, 41, 59, 0.8);
             backdrop-filter: blur(12px);
-            padding: 10px 30px;
+            padding: 8px 24px;
             border-radius: 50px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            gap: 20px;
+            gap: 15px;
         }
 
         nav a {
             text-decoration: none;
             color: var(--secondary);
             font-weight: 500;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -62,19 +62,19 @@
 
         nav a:hover, nav a.active {
             color: white;
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
         }
 
         /* Slides */
         section {
-            padding: 60px 20px; /* Reduced padding to lessen gaps */
-            min-height: auto;
+            padding: 80px 20px;
+            min-height: 100vh;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
         }
 
         #title {
-            min-height: 80vh;
             text-align: center;
             background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
         }
@@ -89,7 +89,7 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 24px;
             margin-top: 30px;
         }
 
@@ -98,21 +98,12 @@
             padding: 30px;
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .card:hover { transform: translateY(-5px); }
-
-        .icon-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         /* Badges */
@@ -144,31 +135,41 @@
             display: block;
             transition: transform 0.5s;
         }
-        .img-box:hover img { transform: scale(1.05); }
 
-        /* Demo Grid */
-        .demo-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            align-items: center;
+        /* Typography */
+        h1 { font-size: 4.5rem; font-weight: 900; margin-bottom: 20px; line-height: 1.1; }
+        h2 { font-size: 3rem; font-weight: 800; margin-bottom: 24px; }
+        h3 { font-size: 1.5rem; margin-bottom: 12px; color: white; }
+        p { color: var(--secondary); margin-bottom: 15px; font-size: 1.1rem; }
+
+        ul { list-style: none; }
+        li { margin-bottom: 12px; color: var(--secondary); }
+        li i { color: var(--primary); margin-right: 10px; width: 18px; }
+
+        .highlight { color: var(--primary); font-weight: 700; }
+
+        /* Results Display */
+        .metric-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .demo-text {
-            padding-right: 40px;
+        .metric-value {
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         @media (max-width: 800px) {
-            .demo-grid { grid-template-columns: 1fr; }
             h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            nav { display: none; }
         }
-
-        /* Typography */
-        h1 { font-size: 4rem; font-weight: 900; margin-bottom: 20px; line-height: 1.1; }
-        h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; }
-        h3 { font-size: 1.4rem; margin-bottom: 12px; }
-        p { color: var(--secondary); margin-bottom: 15px; }
-
     </style>
 </head>
 <body>
@@ -176,20 +177,24 @@
     <nav>
         <a href="#title">Start</a>
         <a href="#problem">Problem</a>
-        <a href="#eda">Insights</a>
-        <a href="#results">Metrics</a>
-        <a href="#demo">Preview</a>
+        <a href="#dataset">Dataset</a>
+        <a href="#eda">EDA</a>
+        <a href="#features">Features</a>
+        <a href="#model">Model</a>
+        <a href="#results">Results</a>
+        <a href="#demo">Demo</a>
+        <a href="#summary">Summary</a>
     </nav>
 
     <!-- 1. Start -->
     <section id="title">
         <div class="container">
-            <div class="badge badge-p">Project Presentation</div>
-            <h1>Automated EdTech<br>Assistant</h1>
-            <p style="font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin: 0 auto 40px;">Classical Machine Learning for Semantic Answer Grading</p>
-            <div style="background: rgba(255,255,255,0.05); display: inline-block; padding: 20px 40px; border-radius: 20px;">
-                <p style="margin: 0; font-weight: 700; color: white;">Presenter: Udita</p>
-                <p style="margin: 0; font-size: 0.9rem;">Evaluation: Academic Major Project 2026</p>
+            <div class="badge badge-p">Major Project Presentation</div>
+            <h1>Automated EdTech<br><span style="color: var(--primary)">Assistant</span></h1>
+            <p>Classical Machine Learning approach for Descriptive Answer Evaluation</p>
+            <div style="margin-top: 50px; background: rgba(255,255,255,0.03); padding: 30px; border-radius: 24px; display: inline-block; border: 1px solid rgba(255,255,255,0.1);">
+                <p style="margin: 0; color: white; font-weight: 700;">Udita</p>
+                <p style="margin: 0; font-size: 0.9rem;">Bachelor of Technology | NST, Rishihood University</p>
             </div>
         </div>
     </section>
@@ -197,128 +202,216 @@
     <!-- 2. Problem -->
     <section id="problem">
         <div class="container">
-            <div class="demo-grid">
-                <div class="demo-text">
-                    <div class="badge badge-w">Problem Statement</div>
-                    <h2>Solving the Grading Bottleneck</h2>
-                    <p>Current educational systems struggle with manual evaluation of descriptive answers, leading to fatigue and inconsistency.</p>
-                    <div class="card" style="margin-top: 30px;">
-                        <h3 style="color: var(--primary);">The Goal</h3>
-                        <p>Build a transparent, math-grounded system that understands student semantics without the high cost of Large Language Models.</p>
-                    </div>
+            <div class="badge badge-w">Context</div>
+            <h2>The Grading Challenge</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="icon-box"><i data-lucide="help-circle"></i></div>
+                    <h3>Automated Grading?</h3>
+                    <p>Evaluating student responses using software to provide instant, consistent feedback at any scale.</p>
                 </div>
-                <div class="grid">
-                    <div class="card">
-                        <i data-lucide="zap" style="color: var(--primary); margin-bottom: 10px;"></i>
-                        <h3>Instant</h3>
-                        <p>Provides sub-second feedback for entire classrooms.</p>
-                    </div>
-                    <div class="card">
-                        <i data-lucide="shield" style="color: #f472b6; margin-bottom: 10px;"></i>
-                        <h3>Fair</h3>
-                        <p>Eliminates subjective human bias via mathematical consistency.</p>
+                <div class="card">
+                    <div class="icon-box"><i data-lucide="trending-up"></i></div>
+                    <h3>Why it's Important</h3>
+                    <p>Scalability in MOOCs and digital classrooms. Fairness by eliminating human fatigue and subjective bias.</p>
+                </div>
+                <div class="card">
+                    <div class="icon-box"><i data-lucide="alert-triangle"></i></div>
+                    <h3>Key Challenges</h3>
+                    <p>Semantic variability (different words, same meaning) and logical understanding of scientific concepts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Dataset -->
+    <section id="dataset">
+        <div class="container">
+            <div class="badge badge-s">Data Engineering</div>
+            <div style="display: flex; gap: 60px; align-items: center; flex-wrap: wrap;">
+                <div style="flex: 1.2; min-width: 350px;">
+                    <h2>SciEntsBank Corpus</h2>
+                    <p>A benchmark dataset from SemEval-2013 Task 7 for student response evaluation.</p>
+                    <ul style="margin-top: 25px;">
+                        <li><i data-lucide="database"></i> 135 Unique Science Questions</li>
+                        <li><i data-lucide="check-square"></i> ~10,000 High-Quality Student Responses</li>
+                        <li><i data-lucide="layers"></i> 3-Way Labeling: Correct, Incorrect, Partial</li>
+                        <li><i data-lucide="lock"></i> Expert-verified reference answers</li>
+                    </ul>
+                </div>
+                <div class="card" style="flex: 1; min-width: 300px; text-align: center;">
+                    <h3 style="margin-bottom: 20px;">Data Splits (UA, UQ, UD)</h3>
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 16px;">
+                        <p style="font-size: 0.9rem;">UA: Unseen Answers</p>
+                        <p style="font-size: 0.9rem;">UQ: Unseen Questions</p>
+                        <p style="font-size: 0.9rem; margin: 0;">UD: Unseen Domains</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. Insights (EDA) -->
+    <!-- 4. EDA -->
     <section id="eda" style="background: #0d121f;">
         <div class="container">
             <div style="text-align: center; margin-bottom: 40px;">
-                <div class="badge badge-s">EDA Insights</div>
-                <h2>Visual Evidence & Patterns</h2>
-                <p>Analyzing the SciEntsBank dataset (10,000+ samples) to drive feature engineering.</p>
+                <div class="badge badge-p">Insights</div>
+                <h2>Data Visual Analysis</h2>
+                <p>Decoding patterns in human grading behavior.</p>
             </div>
-
             <div class="grid">
                 <div class="card">
-                    <div class="badge badge-p">1. Label Distribution</div>
-                    <div class="img-box"><img src="assets/label_distribution.png" alt="Distribution"></div>
-                    <p style="font-size: 0.85rem;">Skewed training data required "Balanced Class Weights" to ensure the model doesn't ignore minority labels.</p>
+                    <div class="badge badge-w">Labels</div>
+                    <div class="img-box"><img src="assets/label_distribution.png" alt="Labels"></div>
+                    <p style="font-size: 0.9rem;">Imbalance detection: Incorrect class dominance requires balanced loss weights.</p>
                 </div>
                 <div class="card">
-                    <div class="badge badge-s">2. Semantic Manifold</div>
+                    <div class="badge badge-s">Semantic Proof</div>
                     <div class="img-box"><img src="assets/pca_visual_proof.png" alt="PCA"></div>
-                    <p style="font-size: 0.85rem;">PCA visualization proof: Students' correct and incorrect answers form distinct mathematical clusters.</p>
+                    <p style="font-size: 0.9rem;">Cluster analysis: Mathematical evidence that answers separate by correctness.</p>
                 </div>
                 <div class="card">
-                    <div class="badge badge-w">3. Feature Interaction</div>
-                    <div class="img-box"><img src="assets/correlation_matrix.png" alt="Correlation"></div>
-                    <p style="font-size: 0.85rem;">Correlation map confirms TF-IDF features and Structural features are non-redundant.</p>
-                </div>
-                <div class="card">
-                    <div class="badge badge-p">4. Length Impact</div>
+                    <div class="badge badge-p">Length Pattern</div>
                     <div class="img-box"><img src="assets/text_length_distribution.png" alt="Length"></div>
-                    <p style="font-size: 0.85rem;">Discovery: Answer length is a significant secondary signal for "Correctness" in scientific responses.</p>
+                    <p style="font-size: 0.9rem;">Correlation: Significant overlap between answer length and grade quality.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. Results -->
-    <section id="results">
+    <!-- 5. Features -->
+    <section id="features">
         <div class="container">
-            <div class="demo-grid">
-                <div class="demo-text">
-                    <div class="badge badge-p">Model Evaluation</div>
-                    <h2>Test Performance</h2>
-                    <p>Rigorous evaluation across Unseen Answers (UA) and Unseen Questions (UQ) splits.</p>
-                    
-                    <div class="grid" style="margin-top: 30px;">
-                        <div style="background: rgba(99, 102, 241, 0.1); padding: 20px; border-radius: 20px; border: 1px solid var(--primary);">
-                            <h1 style="font-size: 3rem; margin: 0; color: #818cf8;">62.4%</h1>
-                            <p style="margin: 0; font-weight: 800;">Accuracy</p>
-                        </div>
-                        <div style="background: rgba(236, 72, 153, 0.1); padding: 20px; border-radius: 20px; border: 1px solid var(--accent);">
-                            <h1 style="font-size: 3rem; margin: 0; color: #f472b6;">0.57</h1>
-                            <p style="margin: 0; font-weight: 800;">F1 Macro</p>
-                        </div>
-                    </div>
+            <div class="badge badge-w">Feature Engineering</div>
+            <h2>Integrated Feature Space</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="icon-box"><i data-lucide="hash"></i></div>
+                    <h3>TF-IDF Vectors</h3>
+                    <p>Capturing the importance of specific terms within the scientific context.</p>
                 </div>
                 <div class="card">
-                    <h3>Key Takeaways</h3>
-                    <ul style="list-style: none; color: var(--secondary)">
-                        <li style="margin-bottom: 10px;"><i data-lucide="check" style="width: 16px; color: var(--success); vertical-align: middle;"></i> Higher accuracy than baseline random chance (33%)</li>
-                        <li style="margin-bottom: 10px;"><i data-lucide="check" style="width: 16px; color: var(--success); vertical-align: middle;"></i> Explainable coefficients in Logistic Regression</li>
-                        <li style="margin-bottom: 10px;"><i data-lucide="check" style="width: 16px; color: var(--success); vertical-align: middle;"></i> Lightweight footprint for Edge deployment</li>
+                    <div class="icon-box"><i data-lucide="copy"></i></div>
+                    <h3>Semantic Indices</h3>
+                    <p>Jaccard Similarity and Token Density ratios against reference standards.</p>
+                </div>
+                <div class="card">
+                    <div class="icon-box"><i data-lucide="maximize"></i></div>
+                    <h3>Structural Metrics</h3>
+                    <p>Answer/Reference length ratio and word density metrics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Model -->
+    <section id="model" style="background: #0d121f;">
+        <div class="container">
+            <div class="badge badge-p">Machine Learning CORE</div>
+            <div class="demo-grid" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px;">
+                <div>
+                    <h2>Logistic Regression</h2>
+                    <p>A supervised linear classifier chosen for its extreme <span class="highlight">Explainability</span>.</p>
+                    <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 20px; font-family: monospace; color: var(--primary); margin: 20px 0; border: 1px solid rgba(255,255,255,0.05);">
+                        z = w<sub>1</sub>x<sub>tfidf</sub> + w<sub>2</sub>x<sub>semantic</sub> + w<sub>3</sub>x<sub>structural</sub> + b
+                    </div>
+                    <ul>
+                        <li><i data-lucide="check"></i> Multi-class one-vs-rest strategy</li>
+                        <li><i data-lucide="check"></i> L2 Regularization to prevent overfitting</li>
+                        <li><i data-lucide="check"></i> Balanced weights for handling skewness</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Advantages</h3>
+                    <p style="font-size: 0.95rem;">Faster than BERT models (~1ms inference time). Allows teachers to see "why" a student got a specific grade based on feature weights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Results -->
+    <section id="results">
+        <div class="container">
+            <div class="badge badge-s">Validation</div>
+            <h2 style="text-align: center; margin-bottom: 50px;">Evaluation Metrics</h2>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div class="metric-card">
+                    <div class="metric-value">62.4%</div>
+                    <p style="font-weight: 800; text-transform: uppercase;">Average Accuracy</p>
+                    <p style="font-size: 0.8rem;">Across Unseen Answer (UA) splits</p>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">0.57</div>
+                    <p style="font-weight: 800; text-transform: uppercase;">F1 Macro Score</p>
+                    <p style="font-size: 0.8rem;">Accounting for precision and recall</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Demo -->
+    <section id="demo" style="background: #0d121f;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <div class="badge badge-w">Implementation</div>
+                <h2>Interactive Showcase</h2>
+                <p>The deployed web dashboard illustrating the human-AI interaction loop.</p>
+            </div>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div class="card" style="padding: 10px; background: #000;">
+                    <img src="assets/frontend_grade.png" alt="Grade" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <p style="text-align: center; margin-top: 15px; font-weight: 700;">Submission Evaluation</p>
+                </div>
+                <div class="card" style="padding: 10px; background: #000;">
+                    <img src="assets/frontend_analytics.png" alt="Analytics" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                    <p style="text-align: center; margin-top: 15px; font-weight: 700;">Teacher Analytics</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Summary -->
+    <section id="summary">
+        <div class="container">
+            <div class="badge badge-p">Conclusion</div>
+            <h2 style="margin-bottom: 40px;">Project Summary</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Limitations</h3>
+                    <ul>
+                        <li><i data-lucide="x-circle" style="color: var(--accent);"></i> Vocabulary sensitivity (Exact match dependent)</li>
+                        <li><i data-lucide="x-circle" style="color: var(--accent);"></i> No OCR (Digital text only)</li>
+                        <li><i data-lucide="x-circle" style="color: var(--accent);"></i> Lacks deep semantic negation logic</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Future Work</h3>
+                    <ul>
+                        <li><i data-lucide="arrow-right"></i> Sentence-Transformer Embeddings</li>
+                        <li><i data-lucide="arrow-right"></i> Hybrid Deep Learning Models (BERT)</li>
+                        <li><i data-lucide="arrow-right"></i> OCR Handwriting Integration</li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- 5. Demo Showcase -->
-    <section id="demo" style="background: #0d121f;">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: 40px;">
-                <div class="badge badge-w">App Showcase</div>
-                <h2>Interactive Demo Preview</h2>
-                <p>The Grading Assistant interface designed for seamless teacher & student interaction.</p>
+            <div class="card" style="margin-top: 40px; border-left: 6px solid var(--primary);">
+                <h3>Final Conclusion</h3>
+                <p>We successfully built a robust baseline for automated EdTech grading using only mathematical manifolds and classical regression, proving that explainability and scalable feedback can coexist.</p>
             </div>
-
-            <div class="grid" style="grid-template-columns: 1fr 1fr;">
-                <div class="card" style="padding: 10px; background: #000;">
-                    <img src="assets/frontend_grade.png" alt="Grade UI" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-                    <p style="text-align: center; margin-top: 15px; font-weight: 700; color: white;">Evaluation Dashboard</p>
-                </div>
-                <div class="card" style="padding: 10px; background: #000;">
-                    <img src="assets/frontend_analytics.png" alt="Analytics UI" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-                    <p style="text-align: center; margin-top: 15px; font-weight: 700; color: white;">Class Performance Analytics</p>
-                </div>
+            <div style="text-align: center; margin-top: 60px;">
+                <h1 style="font-size: 5rem; opacity: 0.9; background: linear-gradient(to right, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Thank You!</h1>
+                <p>Questions?</p>
             </div>
         </div>
     </section>
 
-    <footer style="padding: 40px; text-align: center; opacity: 0.5;">
-        <p>&copy; 2026 Academic Major Project Presentation | Built with ❤️</p>
+    <footer style="padding: 40px; text-align: center; opacity: 0.3; border-top: 1px solid rgba(255,255,255,0.05);">
+        <p>&copy; 2026 Udita | NST Rishihood University</p>
     </footer>
 
     <script>
         lucide.createIcons();
-
-        // Scroll highlight
+        
+        // Navigation Highlighting
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -327,7 +420,7 @@
                     });
                 }
             });
-        }, { threshold: 0.5 });
+        }, { threshold: 0.4 });
         document.querySelectorAll('section').forEach(s => observer.observe(s));
     </script>
 </body>
