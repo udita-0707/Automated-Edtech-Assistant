@@ -1,4 +1,4 @@
-from utils import load_scientsbank, convert_labels, perform_eda, prepare_dataframe
+from utils import load_scientsbank, convert_labels, prepare_dataframe
 from model import TextClassifier
 import config
 import os
@@ -10,11 +10,7 @@ def main():
     dataset = load_scientsbank()
     dataset = convert_labels(dataset, config.LABEL_SCHEME)
 
-    # 2. EDA (Saves to notebooks/ directory)
-    # Generates comprehensive data visualizations
-    perform_eda(dataset)
-
-    # 3. COMPREHENSIVE EVALUATION (UA, UQ, UD splits)
+    # 2. COMPREHENSIVE EVALUATION (UA, UQ, UD splits)
     # This proves "Generalization Ability" for the rubric
     clf = TextClassifier(max_features=config.MAX_FEATURES)
     

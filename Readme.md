@@ -34,7 +34,7 @@ Automated-Edtech-Assistant/
 │   ├── config.py         # Hyperparameters & Paths
 │   ├── requirements.txt  # Dependencies
 │   └── README.md         # Service Documentation
-├── notebooks/            # Data Visualizations & Analysis
+├── notebooks/            # Data Visualizations & Independent EDA
 ├── report/               # Academic Project Documentation (LaTeX)
 └── README.md             # Project Overview
 ```
