@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automated EdTech Assistant | Project Portal</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap">
+    <title>Automated EdTech Assistant | Unified Project Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6366f1;
-            --accent: #ec4899;
+            --secondary: #94a3b8;
             --bg: #0f172a;
             --surface: #1e293b;
             --text: #f8fafc;
-            --text-dim: #94a3b8;
+            --accent: #ec4899;
+            --success: #10b981;
         }
 
         * {
@@ -26,159 +30,370 @@
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            min-height: 100vh;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 8px 24px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-            background-attachment: fixed;
-            overflow: hidden;
+            gap: 15px;
         }
 
-        .portal-container {
-            text-align: center;
-            max-width: 900px;
-            padding: 40px;
-            z-index: 10;
-        }
-
-        .header {
-            margin-bottom: 60px;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #818cf8, #c084fc, #fb7185);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p.subtitle {
-            font-size: 1.25rem;
-            color: var(--text-dim);
-            font-weight: 300;
+        nav a {
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 500;
+            font-size: 0.7rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
+        nav a:hover, nav a.active { color: white; }
+
+        /* Slides */
+        section {
+            padding: 80px 20px;
+            min-height: 100vh;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Cards */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 40px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: fadeInUp 1s ease-out both;
-        }
-
-        .card:nth-child(2) { animation-delay: 0.2s; }
-        .card:nth-child(3) { animation-delay: 0.4s; }
-
-        .card:hover {
-            transform: translateY(-12px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
-            background: rgba(30, 41, 59, 0.9);
-        }
-
-        .icon-box {
-            width: 64px;
-            height: 64px;
-            border-radius: 18px;
             background: var(--surface);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
-            color: var(--primary);
-            transition: all 0.3s;
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
 
-        .card:hover .icon-box {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
 
-        h3 {
-            font-size: 1.5rem;
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
             margin-bottom: 12px;
         }
+        .badge-p { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
+        .badge-s { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .badge-w { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
 
-        .card-desc {
-            font-size: 0.95rem;
-            color: var(--text-dim);
-            line-height: 1.6;
+        /* Portal Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn:hover { background: #4f46e5; transform: scale(1.05); }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        /* Header Slide Specific */
+        #title {
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            text-align: center;
         }
 
-        .footer {
-            margin-top: 80px;
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            opacity: 0.6;
-        }
+        h1 { font-size: 4.5rem; font-weight: 900; margin-bottom: 20px; line-height: 1.1; }
+        h2 { font-size: 3rem; font-weight: 800; margin-bottom: 24px; }
+        h3 { font-size: 1.5rem; margin-bottom: 12px; }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .img-box {
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 15px 0;
+            border: 1px solid rgba(255,255,255,0.1);
         }
+        .img-box img { width: 100%; display: block; transition: transform 0.5s; }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 640px) {
-            h1 { font-size: 2.5rem; }
-            .grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 800px) { h1 { font-size: 2.5rem; } nav { display: none; } }
     </style>
 </head>
 <body>
-    <div class="portal-container">
-        <div class="header">
+
+    <nav>
+        <a href="#title">Home</a>
+        <a href="#problem">Problem</a>
+        <a href="#dataset">Dataset</a>
+        <a href="#eda">Insights</a>
+        <a href="#model">Model</a>
+        <a href="#demo">Preview</a>
+        <a href="#summary">Summary</a>
+    </nav>
+
+    <!-- 1. Integrated Portal Start -->
+    <section id="title">
+        <div class="container">
+            <div class="badge badge-p">Unified Project Presence</div>
             <h1>Automated EdTech Assistant</h1>
-            <p class="subtitle">Classical ML Semantic Grading Pipeline</p>
-        </div>
+            <p style="font-size: 1.2rem; margin-bottom: 40px;">Academic Presentation & Technical Resources</p>
+            
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 50px;">
+                <a href="#problem" class="btn">Start Presentation <i data-lucide="play-circle"></i></a>
+                <a href="http://localhost:5174" class="btn btn-outline">Launch Grader App <i data-lucide="layout"></i></a>
+                <a href="/report/MLProject_Report.pdf" class="btn btn-outline" target="_blank">Technical Report <i data-lucide="file-text"></i></a>
+            </div>
 
-        <div class="grid">
-            <a href="/presentation/" class="card">
-                <div class="icon-box"><i data-lucide="presentation"></i></div>
-                <h3>Project Slides</h3>
-                <p class="card-desc">Interactive 10-minute presentation covering EDA, Feature Engineering, and Results.</p>
-            </a>
-
-            <a href="http://localhost:5174" class="card">
-                <div class="icon-box"><i data-lucide="layout"></i></div>
-                <h3>Launch Frontend</h3>
-                <p class="card-desc">Full React dashboard for real-time answer evaluation (requires local dev server).</p>
-            </a>
+            <div style="opacity: 0.6; font-size: 0.9rem;">
+                <p>Udita | B.Tech | NST Rishihood University</p>
+            </div>
         </div>
+    </section>
 
-        <div class="footer">
-            <p>&copy; 2026 Machine Learning Project | Academic Submission</p>
+    <!-- 2. Problem -->
+    <section id="problem">
+        <div class="container">
+            <div class="badge badge-w">Context</div>
+            <h2>The Grading Bottleneck</h2>
+            <div class="grid">
+                <div class="card">
+                    <div style="height: 48px; width: 48px; background: rgba(99,102,241,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--primary);"><i data-lucide="help-circle"></i></div>
+                    <h3>Automated Grading?</h3>
+                    <p>Evaluating student responses using software to provide instant, consistent feedback at any scale.</p>
+                </div>
+                <div class="card">
+                    <div style="height: 48px; width: 48px; background: rgba(99,102,241,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--primary);"><i data-lucide="trending-up"></i></div>
+                    <h3>Why it's Important</h3>
+                    <p>Scalability in massive classrooms. Fairness by eliminating human fatigue and subjective bias.</p>
+                </div>
+                <div class="card">
+                    <div style="height: 48px; width: 48px; background: rgba(99,102,241,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--primary);"><i data-lucide="alert-triangle"></i></div>
+                    <h3>Semantic Challenges</h3>
+                    <p>Capturing diverse vocabulary and scientific nuance without complex, expensive black-box LLMs.</p>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- 3. Dataset -->
+    <section id="dataset">
+        <div class="container">
+            <div class="badge badge-s">Core Data</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <h2>SciEntsBank Corpus</h2>
+                    <p>Gold-standard science response library from SemEval-2013 Task 7.</p>
+                    <ul style="list-style: none; margin-top: 25px;">
+                        <li style="margin-bottom: 12px;"><i data-lucide="database" style="color: var(--primary); margin-right: 10px; width: 18px;"></i> 135 Unique Questions</li>
+                        <li style="margin-bottom: 12px;"><i data-lucide="users" style="color: var(--primary); margin-right: 10px; width: 18px;"></i> ~10,000 Student Answers</li>
+                        <li style="margin-bottom: 12px;"><i data-lucide="check-square" style="color: var(--primary); margin-right: 10px; width: 18px;"></i> 3-Way Label Hierarchy</li>
+                    </ul>
+                </div>
+                <div class="card" style="text-align: center; background: rgba(0,0,0,0.2);">
+                    <h3>Evaluation Splits</h3>
+                    <p style="font-size: 0.9rem;">UA: Unseen Answers | UQ: Unseen Questions</p>
+                    <p style="font-size: 0.9rem;">Ensuring generalization across unfamiliar topics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Insights (EDA) -->
+    <section id="eda" style="background: #0d121f;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <div class="badge badge-p">EDA Gallery</div>
+                <h2>Visual Evidence</h2>
+                <p>Decoding the mathematical structure of the student response manifold.</p>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <p class="badge badge-w">Labels</p>
+                    <div class="img-box"><img src="assets/label_distribution.png" alt="Labels"></div>
+                    <p style="font-size: 0.85rem;">Class skew analysis requires weighted loss during model training.</p>
+                </div>
+                <div class="card">
+                    <p class="badge badge-s">Mapping</p>
+                    <div class="img-box"><img src="assets/pca_visual_proof.png" alt="PCA"></div>
+                    <p style="font-size: 0.85rem;">PCA proof: Clear clusters demonstrating semantic separation.</p>
+                </div>
+                <div class="card">
+                    <p class="badge badge-p">Correlation</p>
+                    <div class="img-box"><img src="assets/correlation_matrix.png" alt="Correlation"></div>
+                    <p style="font-size: 0.85rem;">Confirming low redundancy between TF-IDF and structural features.</p>
+                </div>
+                <div class="card">
+                    <p class="badge badge-w">Lengths</p>
+                    <div class="img-box"><img src="assets/text_length_distribution.png" alt="Length"></div>
+                    <p style="font-size: 0.85rem;">Answer verbosity as a predictive signal for correctness.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Features -->
+    <section id="features">
+        <div class="container">
+            <div class="badge badge-w">Engineering</div>
+            <h2>Integrated Feature Space</h2>
+            <div class="grid">
+                <div class="card">
+                    <div style="height: 48px; width: 48px; background: rgba(99,102,241,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--primary);"><i data-lucide="hash"></i></div>
+                    <h3>TF-IDF Vectors</h3>
+                    <p>Capturing scientific keyword frequency and contextual importance.</p>
+                </div>
+                <div class="card">
+                    <div style="height: 48px; width: 48px; background: rgba(99,102,241,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--primary);"><i data-lucide="copy"></i></div>
+                    <h3>Semantic Indices</h3>
+                    <p>Jaccard Overlap and Token Density against reference standards.</p>
+                </div>
+                <div class="card">
+                    <div style="height: 48px; width: 48px; background: rgba(99,102,241,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--primary);"><i data-lucide="maximize"></i></div>
+                    <h3>Structural Metrics</h3>
+                    <p>Normalizing answer length and word counts across splits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Model -->
+    <section id="model" style="background: #0d121f;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center;">
+                <div>
+                    <div class="badge badge-p">Classification</div>
+                    <h2>Logistic Regression</h2>
+                    <p>Supervised linear classifier chosen for extreme <span style="color: var(--primary); font-weight: 700;">Explainability</span>.</p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 25px; border-radius: 20px; font-family: monospace; border: 1px solid rgba(255,255,255,0.05);">
+                        z = weight &times; features + bias
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Advantages</h3>
+                    <p style="font-size: 0.95rem;">Mathematically transparent. Teachers can audit "why" a grade was assigned by inspecting feature coefficients.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Results -->
+    <section id="results">
+        <div class="container" style="text-align: center;">
+            <div class="badge badge-s">Metrics</div>
+            <h2 style="margin-bottom: 50px;">Validation Results</h2>
+            <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                <div style="background: rgba(99, 102, 241, 0.1); padding: 50px; border-radius: 30px; border: 1px solid var(--primary);">
+                    <h1 style="font-size: 5rem; margin: 0; color: #818cf8;">62.4%</h1>
+                    <p style="font-weight: 800;">Accuracy (UA)</p>
+                </div>
+                <div style="background: rgba(236, 72, 153, 0.1); padding: 50px; border-radius: 30px; border: 1px solid var(--accent);">
+                    <h1 style="font-size: 5rem; margin: 0; color: #f472b6;">0.57</h1>
+                    <p style="font-weight: 800;">F1 Macro Score</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Demo Showcase -->
+    <section id="demo" style="background: #0d121f;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <div class="badge badge-w">App Preview</div>
+                <h2>Interactive Dashboard</h2>
+                <p>Final interface for real-time grading and class monitoring.</p>
+            </div>
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="card" style="padding: 10px; background: #000;">
+                    <img src="assets/frontend_grade.png" alt="Grade" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                </div>
+                <div class="card" style="padding: 10px; background: #000;">
+                    <img src="assets/frontend_analytics.png" alt="Analytics" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Summary -->
+    <section id="summary">
+        <div class="container">
+            <div class="badge badge-p">Synthesis</div>
+            <h2 style="margin-bottom: 40px;">Presentation Summary</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Summary & Limitations</h3>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 10px;"><i data-lucide="x-circle" style="color: var(--accent); margin-right: 10px; width: 16px; display: inline-block;"></i> Vocabulary sensitivity</li>
+                        <li style="margin-bottom: 10px;"><i data-lucide="x-circle" style="color: var(--accent); margin-right: 10px; width: 16px; display: inline-block;"></i> No OCR (Digital text only)</li>
+                        <li style="margin-bottom: 10px;"><i data-lucide="x-circle" style="color: var(--accent); margin-right: 10px; width: 16px; display: inline-block;"></i> Lacks semantic negation logic</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Future Work</h3>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 10px;"><i data-lucide="arrow-right" style="color: var(--success); margin-right: 10px; width: 16px; display: inline-block;"></i> Transformer Embeddings</li>
+                        <li style="margin-bottom: 10px;"><i data-lucide="arrow-right" style="color: var(--success); margin-right: 10px; width: 16px; display: inline-block;"></i> Hybrid BERT Integration</li>
+                        <li style="margin-bottom: 10px;"><i data-lucide="arrow-right" style="color: var(--success); margin-right: 10px; width: 16px; display: inline-block;"></i> OCR Handwriting Support</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 40px; border-left: 6px solid var(--primary); background: rgba(255,255,255,0.03);">
+                <h3>Conclusion</h3>
+                <p>We successfully built a robust baseline for automated EdTech grading using only mathematical manifolds and classical regression, proving that explainability and scalable feedback can coexist.</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 60px;">
+                <h1 style="font-size: 5rem; background: linear-gradient(to right, #818cf8, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Thank You!</h1>
+                <p>Questions?</p>
+            </div>
+        </div>
+    </section>
 
     <script>
         lucide.createIcons();
+        
+        // Active Link Highlighting
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('nav a').forEach(a => {
+                        a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
     </script>
 </body>
 </html>
