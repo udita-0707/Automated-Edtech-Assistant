@@ -53,6 +53,18 @@ pip install torch transformers sentence-transformers
 If you encounter the `externally-managed-environment` error:
 > This occurs on macOS when trying to install packages system-wide. Always ensure your virtual environment is activated (`source venv/bin/activate`) before running pip.
 
+### 4. 🛠️ Generating Model Artifacts (Crucial)
+Following industry best practices, large binary artifacts (`.pkl` files) are not tracked in this repository to ensure reproducibility and security. You **must** generate these files locally before running the API or frontend:
+
+```bash
+# Generate Phase 1 Model (Logistic Regression + Vectorizer)
+python ml-service/run_train_eval.py
+
+# Generate Phase 2 Model (SVM Ensemble + SBERT artifacts)
+python phase2/run_train_eval.py
+```
+This process validates that the code is fully operational on your local machine.
+
 ---
 
 ## 🔬 Phase 1: Classical ML Pipeline
