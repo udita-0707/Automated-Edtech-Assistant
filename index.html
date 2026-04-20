@@ -696,6 +696,7 @@
     font-size: 0.82rem;
     color: var(--muted);
     line-height: 1.7;
+    white-space: pre-wrap;
   }
 
   .formula {
@@ -758,7 +759,7 @@
 </div>
 
 <!-- SLIDE 2: PROBLEM STATEMENT -->
-<div class="slide" id="s2" data-notes="The problem has three layers. First, OCR — you can't grade what you can't read. Second, semantics — a student who writes 'mitochondria makes ATP' and one who writes 'mitochondria produces energy' should both get credit, but keyword matching penalizes the second. Third, fairness — an automated system must be consistent in a way a tired human grader at 2am is not.">
+<div class="slide" id="s2" data-notes="The problem has three layers. First, OCR — you can't grade what you can't read. Second, semantics — a student who writes 'mitochondria makes ATP' and one who writes 'mitochondria produces energy' should both get credit, but keyword matching penalizes the second. Third, fairness — an automated system must be consistent in a way a tired human grader at 2am is not. &#10;&#10;[VIVA Q]&#10;Q: Why not just use ChatGPT to grade?&#10;A: LLMs are black boxes — you cannot explain to a student why they were marked down. Our system provides interpretable similarity scores, concept-level feedback, and SHAP explainability. LLMs also hallucinate grade justifications.">
   <div class="tag both animate">&#9679; Motivation</div>
   <h2 class="animate">Why this problem matters</h2>
   <div class="grid-2 animate" style="flex:1;align-items:start;margin-top:8px;">
@@ -787,15 +788,10 @@
       </div>
     </div>
   </div>
-  <div class="viva-box animate">
-    <div class="vq">Viva Q</div>
-    <div class="vq-text">Why not just use ChatGPT to grade?</div>
-    <div class="va">LLMs are black boxes — you cannot explain to a student why they were marked down. Our system provides interpretable similarity scores, concept-level feedback, and SHAP explainability. LLMs also hallucinate grade justifications.</div>
-  </div>
 </div>
 
 <!-- SLIDE 3: PHASE 1 ARCHITECTURE -->
-<div class="slide" id="s3" data-notes="Phase 1 is deliberately classical. We use Tesseract with --oem 0 which is the legacy non-LSTM engine. This is intentional — we want a pure non-neural baseline. The grader uses TF-IDF features combined with Jaccard similarity and structural features, fed into Logistic Regression with balanced class weights to handle the class imbalance in SciEntsBank.">
+<div class="slide" id="s3" data-notes="Phase 1 is deliberately classical. We use Tesseract with --oem 0 which is the legacy non-LSTM engine. This is intentional — we want a pure non-neural baseline. The grader uses TF-IDF features combined with Jaccard similarity and structural features, fed into Logistic Regression with balanced class weights to handle the class imbalance in SciEntsBank. &#10;&#10;[VIVA Q]&#10;Q: Why --oem 0 and not --oem 3?&#10;A: --oem 3 uses LSTM internally — that would contaminate our non-neural Phase 1 claim. --oem 0 is legacy Tesseract, slower but fully classical.">
   <div class="tag phase1 animate">&#9679; Phase 1</div>
   <h2 class="animate">Classical baseline architecture</h2>
   <div class="split wide animate" style="flex:1;">
@@ -868,17 +864,12 @@
         <code class="formula">J(A,B) = |A∩B| / |A∪B|</code>
         <div class="card-body" style="margin-top:8px;">Set-based. Cannot capture synonyms ("energy" ≠ "ATP"). This is Phase 1's core limitation.</div>
       </div>
-      <div class="viva-box">
-        <div class="vq">Viva Q</div>
-        <div class="vq-text">Why --oem 0 and not --oem 3?</div>
-        <div class="va">--oem 3 uses LSTM internally — that would contaminate our non-neural Phase 1 claim. --oem 0 is legacy Tesseract, slower but fully classical.</div>
-      </div>
     </div>
   </div>
 </div>
 
 <!-- SLIDE 4: WHAT WENT WRONG -->
-<div class="slide" id="s4" data-notes="Phase 1 had a critical bug — we were training on the test_ua split and evaluating on the same data. This inflated metrics artificially. We caught it, fixed it, and re-ran. The real numbers are lower but honest. More fundamentally, Jaccard similarity is set-based — it cannot recognize that 'energy production' and 'ATP synthesis' mean the same thing. The UD split dropped significantly because TF-IDF memorizes training vocabulary.">
+<div class="slide" id="s4" data-notes="Phase 1 had a critical bug — we were training on the test_ua split and evaluating on the same data. This inflated metrics artificially. We caught it, fixed it, and re-ran. The real numbers are lower but honest. More fundamentally, Jaccard similarity is set-based — it cannot recognize that 'energy production' and 'ATP synthesis' mean the same thing. The UD split dropped significantly because TF-IDF memorizes training vocabulary. &#10;&#10;[VIVA Q]&#10;Q: How did you catch the training bug?&#10;A: Performance was suspiciously high — near-perfect F1 on test_ua. Tracing found prepare_dataframe was leaking train data into the test set. Fixed by ensuring the train split is always used for fitting.">
   <div class="tag error animate">&#9679; Phase 1 — What Went Wrong</div>
   <h2 class="animate">Failures, bugs, and lessons</h2>
   <div class="grid-2 animate" style="flex:1;align-items:start;gap:16px;margin-top:8px;">
@@ -910,17 +901,12 @@
         <div class="card-title">Suspiciously high F1 on test_ua</div>
         <div class="card-body">Near-perfect F1 on test_ua was a red flag. Tracing the code revealed prepare_dataframe was returning train data for both train and test when called with the test_ua split argument.</div>
       </div>
-      <div class="viva-box">
-        <div class="vq">Viva Q</div>
-        <div class="vq-text">How did you catch the training bug?</div>
-        <div class="va">Performance was suspiciously high — near-perfect F1 on test_ua. Tracing found prepare_dataframe was leaking train data into the test set. Fixed by ensuring the train split is always used for fitting.</div>
-      </div>
     </div>
   </div>
 </div>
 
 <!-- SLIDE 5: PHASE 1 RESULTS -->
-<div class="slide" id="s5" data-notes="We report F1 Macro, not accuracy, because SciEntsBank has class imbalance. Accuracy would be gamed by predicting the majority class. The UD split is hardest — it tests whether the model generalizes to entirely new science domains it never saw during training. TF-IDF fails here because its vocabulary is domain-specific.">
+<div class="slide" id="s5" data-notes="We report F1 Macro, not accuracy, because SciEntsBank has class imbalance. Accuracy would be gamed by predicting the majority class. The UD split is hardest — it tests whether the model generalizes to entirely new science domains it never saw during training. TF-IDF fails here because its vocabulary is domain-specific. &#10;&#10;[VIVA Q]&#10;Q: What does the confusion matrix tell you?&#10;A: The model most confuses 'partially correct' with 'correct'. The boundary is semantically subtle — TF-IDF cannot detect a missing concept. This motivates concept-level feedback in Phase 3.">
   <div class="tag phase1 animate">&#9679; Phase 1 — Results</div>
   <h2 class="animate">Baseline performance</h2>
   <div class="split animate" style="flex:1;gap:24px;align-items:start;margin-top:8px;">
@@ -938,20 +924,20 @@
         <tbody>
           <tr>
             <td><span class="badge blue">test_ua</span></td>
-            <td>[X.XX]</td>
-            <td>[X.XX]</td>
+            <td>0.6241</td>
+            <td>0.5732</td>
             <td><span class="badge green">Baseline</span></td>
           </tr>
           <tr>
             <td><span class="badge blue">test_uq</span></td>
-            <td>[X.XX]</td>
-            <td>[X.XX]</td>
+            <td>0.5280</td>
+            <td>0.4560</td>
             <td><span class="badge yellow">Q-gap</span></td>
           </tr>
           <tr>
             <td><span class="badge blue">test_ud</span></td>
-            <td>[X.XX]</td>
-            <td>[X.XX]</td>
+            <td>0.5804</td>
+            <td>0.4974</td>
             <td><span class="badge red">Domain drop</span></td>
           </tr>
         </tbody>
@@ -972,17 +958,12 @@
         <div class="card-title">correct ↔ partially correct</div>
         <div class="card-body">The semantic boundary is subtle. A student covering 4 of 5 concepts looks nearly identical to a complete answer in TF-IDF space. SBERT's contextual embeddings are designed to resolve this.</div>
       </div>
-      <div class="viva-box">
-        <div class="vq">Viva Q</div>
-        <div class="vq-text">What does the confusion matrix tell you?</div>
-        <div class="va">The model most confuses 'partially correct' with 'correct'. The boundary is semantically subtle — TF-IDF cannot detect a missing concept. This motivates concept-level feedback in Phase 3.</div>
-      </div>
     </div>
   </div>
 </div>
 
 <!-- SLIDE 6: PHASE 2 ARCHITECTURE -->
-<div class="slide" id="s6" data-notes="Phase 2 replaces every classical component with a neural or more principled alternative. Tesseract → TrOCR: a Vision Transformer encodes image patches, a RoBERTa decoder generates characters via cross-attention. Jaccard → SBERT: sentences encoded to 384-dim vectors, cosine similarity in embedding space captures semantics. LogReg → SVM with RBF kernel: the kernel trick maps features to infinite-dimensional space, handling non-linear boundaries.">
+<div class="slide" id="s6" data-notes="Phase 2 replaces every classical component with a neural or more principled alternative. Tesseract → TrOCR: a Vision Transformer encodes image patches, a RoBERTa decoder generates characters via cross-attention. Jaccard → SBERT: sentences encoded to 384-dim vectors, cosine similarity in embedding space captures semantics. LogReg → SVM with RBF kernel: the kernel trick maps features to infinite-dimensional space, handling non-linear boundaries. &#10;&#10;[VIVA Q]&#10;Q: Why all-MiniLM-L6-v2 and not bert-base?&#10;A: Speed: 6 layers vs 12 (2x faster). Quality: distilled from a larger teacher, retains most performance. Memory: 384-dim vs 768-dim. For real-time grading, this trade-off is correct.">
   <div class="tag phase2 animate">&#9679; Phase 2</div>
   <h2 class="animate">Neural pipeline architecture</h2>
   <div class="split animate" style="flex:1;align-items:start;gap:20px;margin-top:4px;">
@@ -1030,17 +1011,12 @@
         <div class="card-label">SBERT — Why not BERT?</div>
         <div class="card-body">Vanilla BERT requires both sentences together → O(n²) pairs. SBERT's Siamese architecture encodes each sentence independently → O(1). Mean pooling over token embeddings gives a fixed 384-dim vector. Cosine in this space captures semantic equivalence across synonyms.</div>
       </div>
-      <div class="viva-box">
-        <div class="vq">Viva Q</div>
-        <div class="vq-text">Why all-MiniLM-L6-v2 and not bert-base?</div>
-        <div class="va">Speed: 6 layers vs 12 (2x faster). Quality: distilled from a larger teacher, retains most performance. Memory: 384-dim vs 768-dim. For real-time grading, this trade-off is correct.</div>
-      </div>
     </div>
   </div>
 </div>
 
 <!-- SLIDE 7: PHASE 2 RESULTS -->
-<div class="slide" id="s7" data-notes="The ablation table tells the key story. Model A (SVM+BM25) is our strongest classical baseline. Model B (SBERT) beats it on UD because semantic embeddings generalize across domains. Model C (Hybrid) outperforms both by combining SVM precision on in-domain data with SBERT generalization. The alpha calibration plot shows alpha=0.4 is optimal — SBERT dominates at 60% weight.">
+<div class="slide" id="s7" data-notes="The ablation table tells the key story. Model A (SVM+BM25) is our strongest classical baseline. Model B (SBERT) beats it on UD because semantic embeddings generalize across domains. Model C (Hybrid) outperforms both by combining SVM precision on in-domain data with SBERT generalization. The alpha calibration plot shows alpha=0.4 is optimal — SBERT dominates at 60% weight. &#10;&#10;[VIVA Q]&#10;Q: What if you set α=0 or α=1?&#10;A: α=0 is pure SBERT (better UD, worse UA). α=1 is pure SVM (opposite). α=0.4 is Pareto-optimal — sacrifices slightly on each split to maximize average F1 across all three.">
   <div class="tag phase2 animate">&#9679; Phase 2 — Results</div>
   <h2 class="animate">Ablation study — 3 models × 3 splits</h2>
   <div class="split animate" style="flex:1;align-items:start;gap:24px;margin-top:4px;">
@@ -1057,21 +1033,21 @@
         <tbody>
           <tr>
             <td>A: SVM + BM25</td>
-            <td>[X.XX]</td>
-            <td>[X.XX]</td>
-            <td>[X.XX]</td>
+            <td>0.5294</td>
+            <td>0.3772</td>
+            <td>0.2989</td>
           </tr>
           <tr>
             <td>B: SBERT Cosine</td>
-            <td>[X.XX]</td>
-            <td>[X.XX]</td>
-            <td>[X.XX]</td>
+            <td>0.3002</td>
+            <td>0.3617</td>
+            <td>0.3541</td>
           </tr>
           <tr class="highlight">
             <td>C: Hybrid (α=0.4) ★</td>
-            <td>[X.XX]</td>
-            <td>[X.XX]</td>
-            <td>[X.XX]</td>
+            <td>0.2763</td>
+            <td>0.3343</td>
+            <td>0.3411</td>
           </tr>
         </tbody>
       </table>
@@ -1114,17 +1090,12 @@
         <div class="card-title">UD gap comparison</div>
         <div class="card-body">Model B (SBERT) degrades least on UD because all-MiniLM-L6-v2 was trained on diverse corpora and produces domain-agnostic embeddings. TF-IDF memorizes — SBERT generalizes.</div>
       </div>
-      <div class="viva-box">
-        <div class="vq">Viva Q</div>
-        <div class="vq-text">What if you set α=0 or α=1?</div>
-        <div class="va">α=0 is pure SBERT (better UD, worse UA). α=1 is pure SVM (opposite). α=0.4 is Pareto-optimal — sacrifices slightly on each split to maximize average F1 across all three.</div>
-      </div>
     </div>
   </div>
 </div>
 
 <!-- SLIDE 8: LIVE DEMO -->
-<div class="slide" id="s8" data-notes="Let me show the system running. I'll type a question about mitochondria and a partial student answer — you can see the result shows the label, the semantic similarity score, the confidence, and a feedback message. The History tab shows all submissions are persisted in SQLite. The Analytics tab shows grade distribution over time. The OCR button uploads a handwritten image — TrOCR transcribes it and populates the student answer field automatically.">
+<div class="slide" id="s8" data-notes="Let me show the system running. I'll type a question about mitochondria and a partial student answer — you can see the result shows the label, the semantic similarity score, the confidence, and a feedback message. The History tab shows all submissions are persisted in SQLite. The Analytics tab shows grade distribution over time. The OCR button uploads a handwritten image — TrOCR transcribes it and populates the student answer field automatically. &#10;&#10;[VIVA Q]&#10;Q: What if the OCR gets the text wrong?&#10;A: OCR errors propagate to the grader — garbage in, garbage out. TrOCR handles print and semi-cursive well but fails on highly stylized handwriting. Phase 3 adds TrOCR confidence scores so low-confidence transcriptions are flagged for human review.">
   <div class="tag both animate">&#9679; Live Demo</div>
   <h2 class="animate">System walkthrough</h2>
   <div class="grid-3 animate" style="margin-top:12px;">
@@ -1165,11 +1136,6 @@
       </div>
     </div>
   </div>
-  <div class="viva-box animate">
-    <div class="vq">Viva Q</div>
-    <div class="vq-text">What if the OCR gets the text wrong?</div>
-    <div class="va">OCR errors propagate to the grader — garbage in, garbage out. TrOCR handles print and semi-cursive well but fails on highly stylized handwriting. Phase 3 adds TrOCR confidence scores so low-confidence transcriptions are flagged for human review.</div>
-  </div>
 </div>
 
 <!-- SLIDE 9: THEORETICAL RIGOR -->
@@ -1206,7 +1172,7 @@
 </div>
 
 <!-- SLIDE 10: PHASE 3 ROADMAP -->
-<div class="slide" id="s10" data-notes="Phase 3 has four components. First, the hybrid becomes synergistic: if SVM confidence exceeds 90%, we skip SBERT entirely — this is the edge computing component. Second, feedback becomes concept-level using spaCy noun chunks. Third, SHAP explainability validates our model is learning real concepts. Fourth, bias analysis checks whether our grader systematically favors longer answers or struggles on specific domains.">
+<div class="slide" id="s10" data-notes="Phase 3 has four components. First, the hybrid becomes synergistic: if SVM confidence exceeds 90%, we skip SBERT entirely — this is the edge computing component. Second, feedback becomes concept-level using spaCy noun chunks. Third, SHAP explainability validates our model is learning real concepts. Fourth, bias analysis checks whether our grader systematically favors longer answers or struggles on specific domains. &#10;&#10;[VIVA Q]&#10;Q: How does the two-stage hybrid satisfy the 'Synergistic' rubric criterion?&#10;A: Synergistic means the whole is greater than the sum of parts. SVM acts as a gating mechanism — it decides whether SBERT runs at all. High-entropy SVM predictions (uncertain) trigger SBERT. Low-entropy (confident) predictions short-circuit it. The models are coupled, not sequential.">
   <div class="tag phase3 animate">&#9679; Phase 3 — Roadmap</div>
   <h2 class="animate">What comes next</h2>
   <div class="grid-2 animate" style="flex:1;align-items:start;margin-top:8px;">
@@ -1234,11 +1200,6 @@
         <div class="card-body">Length bias: does model grade longer answers higher? Domain bias: UA→UD F1 drop per model. Flags if F1(long) > F1(short) + 10% or domain_gap > 10%.</div>
       </div>
     </div>
-  </div>
-  <div class="viva-box animate">
-    <div class="vq">Viva Q</div>
-    <div class="vq-text">How does the two-stage hybrid satisfy the 'Synergistic' rubric criterion?</div>
-    <div class="va">Synergistic means the whole is greater than the sum of parts. SVM acts as a gating mechanism — it decides whether SBERT runs at all. High-entropy SVM predictions (uncertain) trigger SBERT. Low-entropy (confident) predictions short-circuit it. The models are coupled, not sequential.</div>
   </div>
 </div>
 
