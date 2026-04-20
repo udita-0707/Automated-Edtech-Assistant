@@ -6,14 +6,14 @@
 \usepackage[margin=1in]{geometry}
 
 \title{Automated EdTech Grading Assistant: Classical Baseline for Handwritten Short Answer Grading}
-\author{Team Name \\ Date}
+\author{EdTech AI Research Team \\ \today}
 \date{}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Scalable automated grading of handwritten answers presents a significant challenge in educational technology. We present the Phase 1 non-neural pipeline of our Automated EdTech Grading Assistant, which combines classical Tesseract OCR with statistical natural language processing. Using the SciEntsBank dataset, evaluated as a 3-way classification task, we establish a reproducible baseline. Our approach isolates the performance of legacy OCR and term frequency-based text matching prior to introducing deep learning techniques. This baseline intentionally uses non-neural components to establish an interpretable lower bound. The pipeline achieves an F1 Macro score of \textbf{[X.XX]} on unseen domains, highlighting the limitations of classical lexical matching.
+Scalable automated grading of handwritten answers presents a significant challenge in educational technology. We present the Phase 1 non-neural pipeline of our Automated EdTech Grading Assistant, which combines classical Tesseract OCR with statistical natural language processing. Using the SciEntsBank dataset, evaluated as a 3-way classification task, we establish a reproducible baseline. Our approach isolates the performance of legacy OCR and term frequency-based text matching prior to introducing deep learning techniques. This baseline intentionally uses non-neural components to establish an interpretable lower bound. The pipeline achieves an F1 Macro score of \textbf{0.4974} on unseen domains, highlighting the limitations of classical lexical matching.
 \end{abstract}
 
 \section{Introduction}
@@ -91,21 +91,28 @@ Given the imbalanced nature of our training data, we prioritize the F1 Macro met
 \toprule
 Model & test\_ua F1 & test\_uq F1 & test\_ud F1 \\
 \midrule
-Phase 1 Baseline & \textbf{[X.XX]} & \textbf{[X.XX]} & \textbf{[X.XX]} \\
+Phase 1 Baseline & \textbf{0.5732} & \textbf{0.4560} & \textbf{0.4974} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{placeholder_confusion.png}
-    \caption{Confusion matrix on test\_ua}
+    \includegraphics[width=0.45\textwidth]{../phase1/evaluation/confusion_matrix.png}
+    \includegraphics[width=0.45\textwidth]{../phase1/evaluation/label_distribution.png}
+    \caption{Confusion matrix on test\_ua (left) and label distribution across splits (right)}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{placeholder_distribution.png}
-    \caption{Label distribution detailing the class imbalance}
+    \includegraphics[width=0.7\textwidth]{../phase1/evaluation/feature_importance.png}
+    \caption{Top 20 TF-IDF features by LogReg coefficient magnitude}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{../phase1/evaluation/accuracy_comparison.png}
+    \caption{Phase 1 accuracy and F1 Macro score comparison across all test splits}
 \end{figure}
 
 \subsection{Error Analysis}
