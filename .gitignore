@@ -19,11 +19,9 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+# Machine Learning Artifacts
+*.pkl
 ml-service/venv/
-ml-service/data/*.pkl
-ml-service/data/model.pkl
-ml-service/data/scaler.pkl
-ml-service/data/vectorizer.pkl
 
 # Node.js
 frontend/node_modules/
@@ -54,3 +52,15 @@ report/*.log
 report/*.out
 report/*.toc
 report/*.synctex.gz
+report/*.fls
+report/*.fdb_latexmk
+report/*.bbl
+report/*.blg
+report/*.lof
+report/*.lot
+
+# Environments
+.env
+.venv/
+venv/
+env/
