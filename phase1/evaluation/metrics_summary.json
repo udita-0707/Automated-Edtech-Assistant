@@ -1,0 +1,49 @@
+{
+  "phase": 1,
+  "model": "LogReg + TF-IDF + Jaccard + TokenDensity",
+  "label_counts": {
+    "train": {
+      "correct": 2008,
+      "contradictory": 499,
+      "incorrect": 2462
+    },
+    "test_ua": {
+      "correct": 233,
+      "contradictory": 58,
+      "incorrect": 249
+    },
+    "test_uq": {
+      "correct": 301,
+      "contradictory": 64,
+      "incorrect": 368
+    },
+    "test_ud": {
+      "correct": 1917,
+      "contradictory": 417,
+      "incorrect": 2228
+    }
+  },
+  "results": [
+    {
+      "split": "test_ua",
+      "accuracy": 0.6241,
+      "precision_macro": 0.5685,
+      "recall_macro": 0.6011,
+      "f1_macro": 0.5732
+    },
+    {
+      "split": "test_uq",
+      "accuracy": 0.528,
+      "precision_macro": 0.4539,
+      "recall_macro": 0.4727,
+      "f1_macro": 0.456
+    },
+    {
+      "split": "test_ud",
+      "accuracy": 0.5804,
+      "precision_macro": 0.4952,
+      "recall_macro": 0.5085,
+      "f1_macro": 0.4974
+    }
+  ]
+}

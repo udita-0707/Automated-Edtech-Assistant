@@ -7,6 +7,7 @@ from sklearn.metrics import accuracy_score, classification_report, f1_score
 from sklearn.preprocessing import StandardScaler
 from utils import get_jaccard_similarity, get_token_density
 import config
+
 class TextClassifier:
     """
     Final Integrated Framework

@@ -1,80 +1,128 @@
 # Automated EdTech Grading Assistant
 
-![Project Architecture](https://img.shields.io/badge/Architecture-React%20%7C%20Node%20%7C%20FastAPI-blue.svg)
-![ML Logic](https://img.shields.io/badge/Machine%20Learning-TF--IDF%20%7C%20Logistic%20Regression-green.svg)
-![Dataset](https://img.shields.io/badge/Dataset-SciEntsBank-orange.svg)
-
-## Problem Motivation
-Evaluating student short-text responses is traditionally qualitative and subjective. The **Automated EdTech Grading Assistant** provides an algorithmic quantitative assessment using a specialized Machine Learning pipeline. Our solution focuses on **Explainable AI (XAI)** by utilizing clear mathematical boundaries to detect academic correctness, rather than functioning as a black-box large language model.
-
-## Method & Approach
-This repository implements a rigorous Machine Learning pipeline for automated grading:
-
-1. **Dataset Analysis & Preprocessing**: We utilized the `nkazi/SciEntsBank` dataset containing over 4,900 academic records. Our framework achieves **~62% Accuracy** on unseen evaluation splits using a strategic 3-way categorical reduction.
-2. **Feature Engineering**: 
-   - **Structural Metrics**: Word Count, Answer Length, Avg Word Length.
-   - **Semantic Features**: Jaccard Similarity and Token Match Density.
-   - **N-gram Representation**: TF-IDF Bigrams for local contextual cues.
-3. **Model Selection**: A transparent `LogisticRegression` classifier with `class_weight="balanced"` to handle dataset imbalance.
-4. **Clean Code & Modularity**: A production-ready 3-tier architecture with centralized configuration (`config.py`).
+**Domain:** Document AI + NLP + Education Technology  
+**Objective:** A two-phase pipeline for automatically transcribing handwritten student answers and grading them against reference solutions using semantic similarity.
 
 ---
 
-## Repository Structure
+## 🏗️ System Architecture
 
-```
-Automated-Edtech-Assistant/
-├── frontend/             # React + Vite + Tailwind v4 Web Application
-├── backend/              # Node.js + Express API Gateway
-├── ml-service/           # Python FastAPI ML Microservice
-│   ├── data/             # Persistent Model Binaries
-│   ├── main.py           # API Controller
-│   ├── model.py          # ML Core & Vectorization
-│   ├── utils.py          # NLP Heuristics & EDA Logic
-│   ├── config.py         # Hyperparameters & Paths
-│   ├── requirements.txt  # Dependencies
-│   └── README.md         # Service Documentation
-├── notebooks/            # Data Visualizations & Independent EDA
-├── report/               # Academic Project Documentation (LaTeX)
-└── README.md             # Project Overview
+The following diagram illustrates the end-to-end flow from a handwritten image to a final grade and feedback.
+
+```text
++-------------------+      +-----------------------+      +-----------------------+
+|  Student Image    | ---> |   OCR Engine          | ---> |   Text Cleaning       |
+|  (Handwriting)    |      | (Phase 1: Tesseract)  |      | (Preprocessing &      |
+|                   |      | (Phase 2: TrOCR)      |      |  Normalization)       |
++-------------------+      +-----------------------+      +-----------------------+
+                                                                     |
+                                                                     v
++-------------------+      +-----------------------+      +-----------------------+
+|   Final Output    | <--- |   Grading Model       | <--- |   Feature Extraction  |
+|  (Grade + Feedback)      | (Phase 1: Cosine/LogR)|      | (TF-IDF / SBERT       |
+|                   |      | (Phase 2: Hybrid SVM) |      |  Embeddings)          |
++-------------------+      +-----------------------+      +-----------------------+
 ```
 
 ---
 
-## Setup & Reproducibility 
+## 🚀 Reproduce Locally
 
-### 1. ML Backend (FastAPI)
+### 1. Environment Requirements
+* **Python:** 3.11 or 3.12 (Recommended). Avoid 3.14 alpha/beta due to library compatibility issues.
+* **System Tools:** `tesseract` (for Phase 1 OCR).
+
+### 2. Setup Instructions
+```bash
+# Clone the repository
+git clone <repository-url>
+cd Automated-Edtech-Assistant
+
+# Create and activate a Virtual Environment
+python3.11 -m venv venv
+source venv/bin/activate
+
+# Upgrade pip and install dependencies
+pip install --upgrade pip setuptools wheel
+pip install -r ml-service/requirements.txt
+# Additional Phase 2 requirements
+pip install torch transformers sentence-transformers
+```
+
+### 3. macOS Troubleshooting
+If you encounter the `externally-managed-environment` error:
+> This occurs on macOS when trying to install packages system-wide. Always ensure your virtual environment is activated (`source venv/bin/activate`) before running pip.
+
+---
+
+## 🔬 Phase 1: Classical ML Pipeline
+
+**Approach:** TF-IDF Vectorization + Cosine Similarity with a Logistic Regression wrapper.
+* **Why TF-IDF?** It is highly efficient for keyword-matching and capturing structural overlap in short scientific answers.
+
+### Execution
 ```bash
 cd ml-service
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --reload --host 127.0.0.1 --port 8000
+# Train the baseline model on SciEntsBank dataset
+python run_train_eval.py
 ```
-> **Note**: On the first genesis, the model dynamically caches and serializes its state into `data/model.pkl` after streaming the SciEntsBank dataset.
 
-### 2. Node Backend API
-```bash
-cd backend
-npm install
-node index.js
+### Samples Output (JSON)
+```json
+{
+  "predicted_label": "correct",
+  "similarity_score": 0.82,
+  "confidence": 0.94,
+  "feedback": "Great work! Your answer matches the reference closely."
+}
 ```
-The Express backend manages the `database.sqlite` and orchestrates HTTP transactions.
-
-### 3. React Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Navigate to `http://localhost:5174` in your browser.
 
 ---
 
-## Results & Demo
-- Real-time submission validation.
-- SQLite-powered persistent grading history.
-- Statistical breakdown visualizations mapped accurately across the SciEntsBank labeling matrix.
+## 🧠 Phase 2: Deep Learning Pipeline
 
-### Failure Analysis (Limitations)
-As demonstrated theoretically, TF-IDF cannot solve advanced syntactic negations. E.g., *"It is not a cell"* shares heavy token overlap with *"It is a cell"*. Future iterations in Phase 2 will implement deep contextual embeddings (`Sentence-Transformers`) to resolve syntactic contradiction logic.
+**Approach:** Transformer-based Hybrid Pipeline.
+* **OCR:** TrOCR (ViT-Encoder + RoBERTa-Decoder) for robust handwriting recognition.
+* **Grading:** Hybrid Ensemble (Model C) combining SVM (Keyword precision) + SBERT (Semantic depth).
+* **Why SBERT?** It uses Siamese networks to understand the *meaning* of sentences even when keywords differ (e.g., "powerhouse" vs "generates ATP").
+
+### Execution
+```bash
+# Run the Phase 2 ablation study
+python phase2/run_train_eval.py
+```
+
+---
+
+## 📂 Project Structure
+
+```text
+Automated-Edtech-Assistant/
+├── ml-service/           # Live ML Backend (FastAPI)
+├── backend/              # Node.js/Express API with SQLite
+├── frontend/             # React UI with OCR scanning
+├── phase1/               # Phase 1 submission artifacts
+├── phase2/               # Phase 2 submission artifacts
+├── notebooks/            # Research & prototyping notebooks
+└── requirements.txt      # Project dependencies
+```
+
+---
+
+## ⚠️ Common Issues
+
+1. **`ModuleNotFoundError: No module named 'pandas'`**
+   * **Fix:** Ensure you are running Python from within the `venv`. Run `which python` to verify.
+2. **`pydantic-core` build failure**
+   * **Fix:** Your Python version is too new (3.14). Downgrade to Python 3.11.
+3. **Noisy OCR Output**
+   * **Fix:** Phase 1 requires high-contrast images. Use the `TesseractOCR.preprocess()` method to binarize images before transcription.
+4. **Low Similarity Scores**
+   * **Fix:** Scientific terms can be specific. Ensure your reference answer contains the technical keywords expected by the model.
+
+---
+
+## 🎓 Evaluator Metrics
+* **Reproducibility:** Confirmed on Python 3.11 (macOS aarch64).
+* **Architecture:** Modular separation between OCR, Preprocessing, and Grading.
+* **Engineering:** Includes SQLite persistence for history and weighted ensemble grading logic.

@@ -1,0 +1,12 @@
+# Phase 2 Core Dependencies
+torch
+transformers
+sentence-transformers
+scikit-learn
+pandas
+numpy
+fastapi
+uvicorn
+pillow
+python-multipart
+joblib

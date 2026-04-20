@@ -115,7 +115,7 @@ function GradePanel() {
       }
     } catch (err) {
       console.error(err);
-      setError('OCR processing failed. Please check the ML service logs or ensure models are loaded.');
+      setError('OCR failed. Ensure Tesseract is installed on the ML server.');
     } finally {
       setOcrLoading(false);
       e.target.value = ''; // Reset input

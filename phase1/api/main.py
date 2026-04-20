@@ -15,12 +15,8 @@ import config
 # ---------------------------------------------------------------------------
 try:
     import pytesseract
-    import shutil
     from PIL import Image, ImageFilter, ImageOps
     _TESSERACT_AVAILABLE = True
-    
-    tess_path = shutil.which("tesseract") or ( "/opt/homebrew/bin/tesseract" if os.path.exists("/opt/homebrew/bin/tesseract") else "/usr/local/bin/tesseract" )
-    pytesseract.pytesseract.tesseract_cmd = tess_path
 except ImportError:
     _TESSERACT_AVAILABLE = False
 

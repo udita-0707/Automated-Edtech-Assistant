@@ -1,0 +1,10 @@
+split,model,accuracy,precision_macro,recall_macro,f1_macro
+test_ua,Model A (SVM),0.6185,0.5511,0.5215,0.5294
+test_ua,Model B (SBERT),0.3241,0.4134,0.3402,0.3002
+test_ua,Model C (Hybrid),0.3315,0.4205,0.3303,0.2763
+test_uq,Model A (SVM),0.4775,0.3883,0.3769,0.3772
+test_uq,Model B (SBERT),0.4106,0.4143,0.3801,0.3617
+test_uq,Model C (Hybrid),0.4065,0.4053,0.3574,0.3343
+test_ud,Model A (SVM),0.4237,0.344,0.3378,0.2989
+test_ud,Model B (SBERT),0.4007,0.4262,0.3774,0.3541
+test_ud,Model C (Hybrid),0.4204,0.4411,0.365,0.3411

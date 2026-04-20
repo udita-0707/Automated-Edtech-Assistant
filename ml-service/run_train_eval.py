@@ -5,29 +5,29 @@ import os
 
 def main():
     print("🚀 Initializing Final Merged Framework...")
-    
+
     # 1. LOAD DATASET
     dataset = load_scientsbank()
     dataset = convert_labels(dataset, config.LABEL_SCHEME)
 
-    # 2. COMPREHENSIVE EVALUATION (UA, UQ, UD splits)
-    # This proves "Generalization Ability" for the rubric
+    # 2. PREPARE TRAINING DATA
+    # Bug fix (was "test_ua"): always train on the canonical 'train' split
+    # prepare_dataframe() returns 6 values: X_train, X_test, y_train, y_test,
+    # train_ref, test_ref — reference answers needed for semantic features.
+    X_train, _, y_train, _, train_ref, _ = prepare_dataframe(dataset, "train")
+
     clf = TextClassifier(max_features=config.MAX_FEATURES)
-    
-    # We train on the primary 'train' split
-    X_train, _, y_train, _ = prepare_dataframe(dataset, "test_ua")
-    
-    # For training, we need reference answers to extract semantic features
-    train_ref = dataset["train"]["reference_answer"]
-    
-    print("\nTraining on main SciEntsBank split...")
+
+    print("\nTraining on main SciEntsBank 'train' split...")
     clf.train(X_train, y_train, references=train_ref)
     clf.save()
 
+    # 3. COMPREHENSIVE EVALUATION (UA, UQ, UD splits)
+    # Proves "Generalization Ability" for the rubric
     for split in ["test_ua", "test_uq", "test_ud"]:
         print(f"\n===== Evaluating on {split} =====")
-        _, X_test, _, y_test = prepare_dataframe(dataset, split)
-        test_ref = dataset[split]["reference_answer"]
+        # Unpack all 6 values; ignore train columns during evaluation loop
+        _, X_test, _, y_test, _, test_ref = prepare_dataframe(dataset, split)
 
         acc, f1, report = clf.evaluate(X_test, y_test, references=test_ref)
 

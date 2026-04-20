@@ -1,0 +1,96 @@
+{
+  "phase": 2,
+  "models": [
+    "SVM+TF-IDF",
+    "SBERT (all-MiniLM-L6-v2)",
+    "Hybrid Ensemble"
+  ],
+  "best_alpha": 1.0,
+  "alpha_f1_scores": [
+    0.2763,
+    0.2763,
+    0.2763,
+    0.2763,
+    0.2763,
+    0.3559,
+    0.4767,
+    0.501,
+    0.5097,
+    0.521,
+    0.5215
+  ],
+  "results": [
+    {
+      "split": "test_ua",
+      "model": "Model A (SVM)",
+      "accuracy": 0.6185,
+      "precision_macro": 0.5511,
+      "recall_macro": 0.5215,
+      "f1_macro": 0.5294
+    },
+    {
+      "split": "test_ua",
+      "model": "Model B (SBERT)",
+      "accuracy": 0.3241,
+      "precision_macro": 0.4134,
+      "recall_macro": 0.3402,
+      "f1_macro": 0.3002
+    },
+    {
+      "split": "test_ua",
+      "model": "Model C (Hybrid)",
+      "accuracy": 0.3315,
+      "precision_macro": 0.4205,
+      "recall_macro": 0.3303,
+      "f1_macro": 0.2763
+    },
+    {
+      "split": "test_uq",
+      "model": "Model A (SVM)",
+      "accuracy": 0.4775,
+      "precision_macro": 0.3883,
+      "recall_macro": 0.3769,
+      "f1_macro": 0.3772
+    },
+    {
+      "split": "test_uq",
+      "model": "Model B (SBERT)",
+      "accuracy": 0.4106,
+      "precision_macro": 0.4143,
+      "recall_macro": 0.3801,
+      "f1_macro": 0.3617
+    },
+    {
+      "split": "test_uq",
+      "model": "Model C (Hybrid)",
+      "accuracy": 0.4065,
+      "precision_macro": 0.4053,
+      "recall_macro": 0.3574,
+      "f1_macro": 0.3343
+    },
+    {
+      "split": "test_ud",
+      "model": "Model A (SVM)",
+      "accuracy": 0.4237,
+      "precision_macro": 0.344,
+      "recall_macro": 0.3378,
+      "f1_macro": 0.2989
+    },
+    {
+      "split": "test_ud",
+      "model": "Model B (SBERT)",
+      "accuracy": 0.4007,
+      "precision_macro": 0.4262,
+      "recall_macro": 0.3774,
+      "f1_macro": 0.3541
+    },
+    {
+      "split": "test_ud",
+      "model": "Model C (Hybrid)",
+      "accuracy": 0.4204,
+      "precision_macro": 0.4411,
+      "recall_macro": 0.365,
+      "f1_macro": 0.3411
+    }
+  ]
+}
