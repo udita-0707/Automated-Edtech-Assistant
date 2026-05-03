@@ -30,13 +30,13 @@ class SemanticScorer:
         """
         Heuristic grading based on similarity thresholds:
         - Correct: > 0.75
-        - Partial: 0.45 - 0.75
+        - Partial: 0.65 - 0.75
         - Incorrect: < 0.45
         """
         score = self.score(student_answer, reference_answer)
         if score > 0.75:
             return 0 # correct
-        elif score > 0.45:
+        elif score > 0.65:
             return 2 # partial
         else:
             return 1 # incorrect (contradictory/poor)

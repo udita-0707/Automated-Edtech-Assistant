@@ -1,0 +1,13 @@
+Model,Split,Accuracy,F1_Macro,Precision,Recall,F1_Correct,F1_Partial,F1_Incorrect
+Phase1_Baseline,test_ua,0.6241,0.5732,0.5685,0.6011,0.0,0.0,0.0
+Phase1_Baseline,test_uq,0.528,0.456,0.4539,0.4727,0.0,0.0,0.0
+Phase1_Baseline,test_ud,0.5804,0.4974,0.4952,0.5085,0.0,0.0,0.0
+Model_A_SVM,test_ua,0.6185,0.5294,0.5511,0.5215,0.6287,0.6679,0.2917
+Model_B_SBERT_Cal,test_ua,0.4852,0.4048,0.4064,0.4079,0.6004,0.4721,0.1418
+Model_C_Synergistic,test_ua,0.637,0.5365,0.5691,0.5271,0.6564,0.6803,0.2727
+Model_A_SVM,test_uq,0.4775,0.3772,0.3883,0.3769,0.3889,0.5777,0.1651
+Model_B_SBERT_Cal,test_uq,0.5471,0.4252,0.4371,0.4411,0.6493,0.5114,0.1148
+Model_C_Synergistic,test_uq,0.4993,0.3867,0.4014,0.3846,0.4538,0.5799,0.1263
+Model_A_SVM,test_ud,0.4237,0.2989,0.344,0.3378,0.192,0.5834,0.1213
+Model_B_SBERT_Cal,test_ud,0.5441,0.418,0.4216,0.4263,0.6319,0.5364,0.0856
+Model_C_Synergistic,test_ud,0.4535,0.3292,0.3677,0.3498,0.2968,0.5935,0.0973

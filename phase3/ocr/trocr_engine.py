@@ -2,7 +2,7 @@ import torch
 import numpy as np
 from PIL import Image
 from transformers import TrOCRProcessor, VisionEncoderDecoderModel
-from phase2.ocr.line_segmenter import LineSegmenter
+from phase3.ocr.line_segmenter import LineSegmenter
 
 class HandwritingOCR:
     """

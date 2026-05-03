@@ -1,0 +1,22 @@
+============================================================
+PHASE 3 BIAS ANALYSIS REPORT
+============================================================
+
+─── LENGTH BIAS ──────────────────────────────────────────
+  Short answers  (<15 words)  F1 = 0.5414  (n=369)
+  Medium answers (15-39 words) F1 = 0.5231  (n=164)
+  Long answers   (≥40 words)  F1 = 0.4167  (n=7)
+  Bias magnitude: -0.1247
+  Bias detected:  False
+  → No significant length bias (magnitude=-0.1247). Model performance is consistent across answer lengths.
+
+─── DOMAIN GENERALISATION ─────────────────────────────────
+  test_ua (Unseen Answers)    F1 = 0.5365
+  test_uq (Unseen Questions)  F1 = 0.3867
+  test_ud (Unseen Domains)    F1 = 0.3292
+  Question gap (UA→UQ):       0.1498
+  Domain gap   (UA→UD):       0.2073
+  Domain bias:  True
+  → Domain generalisation gap = 0.2073 (>0.08 threshold). Model over-fitted to training domain vocabulary. | Question generalisation gap = 0.1498 (>0.08 threshold). Model struggles with unseen question phrasings.
+
+============================================================

@@ -38,12 +38,12 @@ class HybridGrader:
         
         # Mapping SBERT score to 3-way distribution (heuristic)
         # Correct if high sim, Incorrect if low, Partial if mid
-        if score_b > 0.8:
-            probs_b = np.array([0.9, 0.05, 0.05])
-        elif score_b < 0.4:
-            probs_b = np.array([0.05, 0.9, 0.05])
+        if score_b > 0.72:
+            probs_b = np.array([0.85, 0.05, 0.10])
+        elif score_b < 0.60:
+            probs_b = np.array([0.10, 0.10, 0.80])
         else:
-            probs_b = np.array([0.1, 0.1, 0.8])
+            probs_b = np.array([0.05, 0.85, 0.10])
             
         # Weighted ensemble
         final_probs = self.alpha * probs_a + (1 - self.alpha) * probs_b

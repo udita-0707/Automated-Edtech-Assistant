@@ -10,3 +10,4 @@ uvicorn
 pillow
 python-multipart
 joblib
+opencv-python
