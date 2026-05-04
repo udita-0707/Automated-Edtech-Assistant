@@ -1,7 +1,7 @@
 {
   "thresholds": {
-    "correct": 0.55,
-    "partial": 0.25
+    "correct": 0.72,
+    "partial": 0.50
   },
   "best_train_f1": 0.398
 }

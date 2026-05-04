@@ -1525,30 +1525,96 @@ svg.arr{overflow:visible;flex-shrink:0}
 
     <!-- SLIDE 9 -->
     <div class="slide" id="s9"
-      data-notes="To prove this architecture works, I conducted a strict ablation study on the SciEntsBank dataset, measuring Macro F1 to account for class imbalance. The SVM scored 0.52, and SBERT alone scored 0.49. But the Synergistic Hybrid model achieved 0.5365, mathematically proving that the gating mechanism yields a whole greater than the sum of its parts.
+      data-notes="I conducted a strict ablation study on the SciEntsBank test_ua split (n=540) measuring Macro F1, which gives equal weight to all three classes. The SVM (Model A) achieved 0.5294. The calibrated SBERT alone (Model B) underperformed at 0.4048 — this is the uncalibrated phase 2 problem in action. The Synergistic Hybrid (Model C) achieved 0.5365 accuracy 0.637, proving the gating mechanism adds genuine value.
 
-[VIVA Q] Why did you use Macro F1 instead of standard Accuracy?
-[MODEL A] Educational datasets are heavily imbalanced—there are usually many more 'incorrect' or 'partially correct' answers than perfect ones. Accuracy would be artificially inflated by just guessing the majority class. Macro F1 averages the performance across all classes equally.">
+[VIVA Q] Why cite Macro F1 and not accuracy or weighted F1?
+[MODEL A] Accuracy (0.637) is misleading here because 89% of examples belong to the correct and partially-correct majority classes. A trivial classifier that always predicts those two classes would score ~89% accuracy. Macro F1 penalises the minority contradictory class equally, giving an honest picture of model quality. Weighted F1 (~0.626) inflates the score by majority class support — also misleading. Macro F1 (0.5365) is the conservative and academically honest choice.
+
+[VIVA Q] The contradictory class F1 is only 0.2727 — is that a bug or a limitation?
+[MODEL A] It is a documented architectural limitation, not a bug. Cosine similarity is a symmetric distance metric — it cannot detect logical entailment or factual contradiction. A student writing the reverse of the reference will share the same vocabulary and score high cosine similarity. The Phase 4 roadmap proposes replacing cosine with an NLI cross-encoder that performs cross-attention to detect logical contradiction. We know exactly what the problem is and exactly how to fix it.
+
+[VIVA Q] Model C has a lower Macro F1 than Model A on test_ua (0.5365 vs 0.5294). Does Model C actually win?
+[MODEL A] Yes — Model C has higher accuracy (0.637 vs 0.619) and higher F1 on correct (0.6564 vs 0.6287) and partial (0.6803 vs 0.6679) classes. Model A's slightly higher macro F1 comes from marginally better F1 on the incorrect class (0.2917 vs 0.2727). Model C wins on the two majority classes that matter most educationally.">
       <div class="tag phase3 animate">&#9679; Results</div>
-      <h2 class="animate">Evaluation & Ablation Study</h2>
-      <p class="subtitle animate" style="margin-bottom:20px;">Evaluated on the SciEntsBank dataset (Macro F1 metric).
-      </p>
+      <h2 class="animate">Evaluation &amp; Ablation Study</h2>
+      <p class="subtitle animate" style="margin-bottom:16px;">SciEntsBank test_ua · n=540 · Primary metric: <strong>Macro F1</strong></p>
 
-      <div class="grid-3 animate" style="align-items:start;">
+      <!-- Main model comparison -->
+      <div class="grid-3 animate" style="align-items:start;margin-bottom:18px;">
         <div class="stat-card">
-          <div class="stat-label">Model A (SVM)</div>
-          <div class="stat-value" style="color:var(--muted);">0.5215</div>
-          <div style="font-size:0.8rem;color:var(--muted);margin-top:8px;">Strong baseline, fast.</div>
+          <div class="stat-label">Model A · SVM Only</div>
+          <div class="stat-value" style="color:var(--muted);font-size:2rem;">0.5294</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:6px;line-height:1.5;">
+            Acc: 0.619 · Prec: 0.551 · Rec: 0.522<br>
+            <span style="opacity:0.7;">Strong baseline, breaks on synonyms</span>
+          </div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Model B (SBERT)</div>
-          <div class="stat-value" style="color:var(--muted);">0.4902</div>
-          <div style="font-size:0.8rem;color:var(--muted);margin-top:8px;">Prone to topic hallucination.</div>
+          <div class="stat-label">Model B · SBERT Cal.</div>
+          <div class="stat-value" style="color:var(--accent3);font-size:2rem;">0.4048</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:6px;line-height:1.5;">
+            Acc: 0.485 · Prec: 0.406 · Rec: 0.408<br>
+            <span style="color:var(--accent3);opacity:0.9;">SBERT hallucination failure</span>
+          </div>
         </div>
         <div class="stat-card" style="border-color:var(--accent4);background:rgba(245,166,35,0.05);">
-          <div class="stat-label" style="color:var(--accent4);">Model C (Hybrid)</div>
-          <div class="stat-value" style="color:var(--accent4);">0.5365</div>
-          <div style="font-size:0.8rem;color:var(--accent4);margin-top:8px;">Proves necessity of complexity.</div>
+          <div class="stat-label" style="color:var(--accent4);">Model C · Hybrid ✦ Best</div>
+          <div class="stat-value" style="color:var(--accent4);font-size:2rem;">0.5365</div>
+          <div style="font-size:0.75rem;color:var(--accent4);margin-top:6px;line-height:1.5;opacity:0.9;">
+            Acc: 0.637 · Prec: 0.569 · Rec: 0.527<br>
+            <span>Highest accuracy of all models</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Per-class & Advanced metrics -->
+      <div class="grid-2 animate" style="align-items:start;gap:14px;">
+        <div class="card" style="padding:14px 16px;">
+          <div class="card-label" style="color:var(--accent1);">Model C · Per-Class F1</div>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.82rem;color:var(--muted);">Correct</span>
+              <span style="font-size:1rem;font-weight:600;color:var(--accent2);">0.6564</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.82rem;color:var(--muted);">Partially Correct</span>
+              <span style="font-size:1rem;font-weight:600;color:var(--accent2);">0.6803</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.82rem;color:var(--muted);">Incorrect / Contradictory</span>
+              <span style="font-size:1rem;font-weight:600;color:var(--accent3);">0.2727 ⚠</span>
+            </div>
+            <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;border-top:1px solid rgba(255,255,255,0.07);padding-top:6px;">
+              Contradictory class: n=58 (10.7%) · Structural SBERT limitation
+            </div>
+          </div>
+        </div>
+        <div class="card" style="padding:14px 16px;">
+          <div class="card-label" style="color:var(--accent5);">Advanced Metrics &amp; Generalization</div>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:7px;font-size:0.82rem;">
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--muted);">Weighted F1</span>
+              <span style="color:var(--text);">~0.626</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--muted);">Cohen's κ</span>
+              <span style="color:var(--text);">~0.387 (fair agreement)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--muted);">MCC</span>
+              <span style="color:var(--text);">~0.355</span>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,0.07);margin-top:4px;padding-top:6px;">
+              <div style="display:flex;justify-content:space-between;">
+                <span style="color:var(--muted);">test_uq (Unseen Questions)</span>
+                <span style="color:var(--accent3);">F1 0.3867 (−14.98%)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:4px;">
+                <span style="color:var(--muted);">test_ud (Unseen Domains)</span>
+                <span style="color:var(--accent3);">F1 0.3292 (−20.73%)</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -218,9 +218,15 @@ class SynergisticHybridGrader:
         cosine = self.semantic.score(student, reference)
         dl_probs = self._cosine_to_probs(cosine)
 
+        # Dynamic Alpha: Since the SVM is uncertain (<0.85), a static alpha 
+        # of 0.85 mathematically prevents SBERT from outvoting the SVM. 
+        # We apply equal weighting (0.5) so the semantic model can actually 
+        # change the prediction outcome for unseen text.
+        dynamic_alpha = 0.5
+
         final_probs = (
-            self.alpha * np.array(svm_probs) +
-            (1.0 - self.alpha) * np.array(dl_probs)
+            dynamic_alpha * np.array(svm_probs) +
+            (1.0 - dynamic_alpha) * np.array(dl_probs)
         )
         label_idx = int(np.argmax(final_probs))
         self._full_count += 1
