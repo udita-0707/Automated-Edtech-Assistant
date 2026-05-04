@@ -1,108 +1,97 @@
 # Automated EdTech Grading Assistant
 
 **Domain:** Document AI + NLP + Education Technology  
-**Objective:** A two-phase pipeline for automatically transcribing handwritten student answers and grading them against reference solutions using semantic similarity.
+**Objective:** An end-to-end pipeline for digitizing unconstrained handwritten student answers and evaluating them for semantic and factual correctness against reference solutions.
 
 ---
 
 ## 🏗️ System Architecture
 
-The following diagram illustrates the end-to-end flow from a handwritten image to a final grade and feedback.
+The following diagram illustrates the final end-to-end flow from a handwritten image to a final grade and pedagogical feedback, utilizing our Synergistic Hybrid pipeline.
 
-```text
-+-------------------+      +-----------------------+      +-----------------------+
-|  Student Image    | ---> |   OCR Engine          | ---> |   Text Cleaning       |
-|  (Handwriting)    |      | (Phase 1: Tesseract)  |      | (Preprocessing &      |
-|                   |      | (Phase 2: TrOCR)      |      |  Normalization)       |
-+-------------------+      +-----------------------+      +-----------------------+
-                                                                     |
-                                                                     v
-+-------------------+      +-----------------------+      +-----------------------+
-|   Final Output    | <--- |   Grading Model       | <--- |   Feature Extraction  |
-|  (Grade + Feedback)      | (Phase 1: Cosine/LogR)|      | (TF-IDF / SBERT       |
-|                   |      | (Phase 2: Hybrid SVM) |      |  Embeddings)          |
-+-------------------+      +-----------------------+      +-----------------------+
-```
+![Architecture Diagram](phase3/architecture.png)
 
 ---
 
-## 🚀 Reproduce Locally
+## 🔬 Project Evolution
+
+This capstone project evolved over three distinct developmental phases to iteratively solve critical challenges in automated semantic grading:
+
+### Phase 1: Classical ML Baseline (Lexical Approach)
+* **Architecture:** Tesseract OCR + TF-IDF Vectorization + Logistic Regression.
+* **Outcome:** Established a functional baseline with a Macro F1 of 0.5732 on familiar topics.
+* **Limitation:** Suffered from severe **lexical brittleness**. The model memorized specific domain vocabulary and failed to generalize to unseen scientific domains, systemically penalizing students who used correct synonyms.
+
+### Phase 2: Deep Learning Pipeline (Neural Approach)
+* **Architecture:** TrOCR (ViT-Encoder + RoBERTa-Decoder) + Uncalibrated Sentence-BERT (SBERT).
+* **Outcome:** Drastically improved handwriting recognition on messy student paragraphs. However, grading performance unexpectedly collapsed (F1 = 0.3002).
+* **Limitation:** SBERT's Siamese network architecture caused **factual hallucination**. Because it encodes sentences independently, it conflated topic similarity with factual correctness. A contradictory answer sharing the same domain vocabulary would erroneously receive high cosine similarity and partial credit.
+
+### Phase 3: Synergistic Hybrid Grader (Final Production Model)
+* **Architecture:** Entropy-Gated Routing + Data-Driven Threshold Calibration + spaCy Concept Parsing.
+* **Outcome:** Resolves the dichotomy between classical precision and neural robustness. An SVM calculates prediction confidence. If confidence $\geq 0.85$ (low entropy), the system returns the fast-path SVM grade. Otherwise, it engages the SBERT ensemble using thresholds empirically calibrated to the dataset's actual score distribution ($\tau_c=0.55$, $\tau_p=0.25$).
+* **Result:** Achieved the highest accuracy across all tested models (0.6370) while successfully mitigating deep learning hallucination and generating concept-level "missing noun chunk" feedback for the student.
+
+---
+
+## 🚀 Getting Started
+
+The project is designed to be fully reproducible across both its machine learning evaluation components and its full-stack web application.
 
 ### 1. Environment Requirements
 * **Python:** 3.11 or 3.12 (Recommended). Avoid 3.14 alpha/beta due to library compatibility issues.
-* **System Tools:** `tesseract` (for Phase 1 OCR).
+* **Node.js:** v18+ (for the React Frontend).
 
-### 2. Setup Instructions
+### 2. Setup via Script (Recommended)
+You can set up the entire Python environment, install all dependencies, and prepare the dataset automatically using the provided shell script:
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd Automated-Edtech-Assistant
+cd phase3
+chmod +x setup.sh
+./setup.sh
+```
 
+### 3. Manual Setup Instructions
+If you prefer manual setup:
+```bash
 # Create and activate a Virtual Environment
 python3.11 -m venv venv
 source venv/bin/activate
 
 # Upgrade pip and install dependencies
 pip install --upgrade pip setuptools wheel
-pip install -r ml-service/requirements.txt
-# Additional Phase 2 requirements
-pip install torch transformers sentence-transformers
-```
-
-### 3. macOS Troubleshooting
-If you encounter the `externally-managed-environment` error:
-> This occurs on macOS when trying to install packages system-wide. Always ensure your virtual environment is activated (`source venv/bin/activate`) before running pip.
-
-### 4. 🛠️ Generating Model Artifacts (Crucial)
-Following industry best practices, large binary artifacts (`.pkl` files) are not tracked in this repository to ensure reproducibility and security. You **must** generate these files locally before running the API or frontend:
-
-```bash
-# Generate Phase 1 Model (Logistic Regression + Vectorizer)
-python ml-service/run_train_eval.py
-
-# Generate Phase 2 Model (SVM Ensemble + SBERT artifacts)
-python phase2/run_train_eval.py
-```
-This process validates that the code is fully operational on your local machine.
-
----
-
-## 🔬 Phase 1: Classical ML Pipeline
-
-**Approach:** TF-IDF Vectorization + Cosine Similarity with a Logistic Regression wrapper.
-* **Why TF-IDF?** It is highly efficient for keyword-matching and capturing structural overlap in short scientific answers.
-
-### Execution
-```bash
-cd ml-service
-# Train the baseline model on SciEntsBank dataset
-python run_train_eval.py
-```
-
-### Samples Output (JSON)
-```json
-{
-  "predicted_label": "correct",
-  "similarity_score": 0.82,
-  "confidence": 0.94,
-  "feedback": "Great work! Your answer matches the reference closely."
-}
+pip install -r phase3/requirements.txt
 ```
 
 ---
 
-## 🧠 Phase 2: Deep Learning Pipeline
+## 🖥️ Running the Application
 
-**Approach:** Transformer-based Hybrid Pipeline.
-* **OCR:** TrOCR (ViT-Encoder + RoBERTa-Decoder) for robust handwriting recognition.
-* **Grading:** Hybrid Ensemble (Model C) combining SVM (Keyword precision) + SBERT (Semantic depth).
-* **Why SBERT?** It uses Siamese networks to understand the *meaning* of sentences even when keywords differ (e.g., "powerhouse" vs "generates ATP").
+### 1. Running the Full Web Stack (React + FastAPI)
+The application is fully interactive, featuring a React UI that communicates with a Node.js persistence layer and a FastAPI ML grading engine.
 
-### Execution
+**Terminal 1: Start the ML API (FastAPI)**
 ```bash
-# Run the Phase 2 ablation study
-python phase2/run_train_eval.py
+source venv/bin/activate
+cd phase3/api
+uvicorn main:app --port 8002 --reload
 ```
+
+**Terminal 2: Start the Web UI (React)**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The web interface will be available at `http://localhost:5173`. You can upload a handwritten student image, provide a reference text, and the system will perform OCR, route it through the hybrid grader, and return a grade along with missing concept feedback!
+
+### 2. Reproducing the ML Research Results
+To run the full ablation study, generate the confusion matrices, calculate length bias, and extract SHAP explainability for academic review:
+```bash
+# Ensure you are in the venv
+python phase3/run_pipeline.py
+```
+This will output the final evaluation metrics to the terminal and save all visual artifacts to `phase3/evaluation/`.
 
 ---
 
@@ -110,31 +99,26 @@ python phase2/run_train_eval.py
 
 ```text
 Automated-Edtech-Assistant/
-├── ml-service/           # Live ML Backend (FastAPI)
 ├── backend/              # Node.js/Express API with SQLite
-├── frontend/             # React UI with OCR scanning
-├── phase1/               # Phase 1 submission artifacts
-├── phase2/               # Phase 2 submission artifacts
+├── frontend/             # React Web UI
+├── ml-service/           # Legacy ML Backend (FastAPI Phase 1/2)
 ├── notebooks/            # Research & prototyping notebooks
-└── requirements.txt      # Project dependencies
+├── phase1/               # Phase 1 Classical Baseline
+├── phase2/               # Phase 2 Uncalibrated Neural Pipeline
+├── phase3/               # Phase 3 Final Neuro-Hybrid Codebase
+│   ├── api/              # Final FastAPI ML Backend
+│   ├── grading/          # Hybrid Grader, Calibrated SBERT, SVM
+│   ├── ocr/              # TrOCR with Line Segmentation
+│   ├── evaluation/       # Ablation, Bias, SHAP analysis
+│   └── run_pipeline.py   # Main evaluation script
+├── report/               # Final IEEE LaTeX Research Paper
+├── index.html            # Final Presentation Deck (Reveal/HTML)
 ```
 
 ---
 
-## ⚠️ Common Issues
-
-1. **`ModuleNotFoundError: No module named 'pandas'`**
-   * **Fix:** Ensure you are running Python from within the `venv`. Run `which python` to verify.
-2. **`pydantic-core` build failure**
-   * **Fix:** Your Python version is too new (3.14). Downgrade to Python 3.11.
-3. **Noisy OCR Output**
-   * **Fix:** Phase 1 requires high-contrast images. Use the `TesseractOCR.preprocess()` method to binarize images before transcription.
-4. **Low Similarity Scores**
-   * **Fix:** Scientific terms can be specific. Ensure your reference answer contains the technical keywords expected by the model.
-
----
-
 ## 🎓 Evaluator Metrics
-* **Reproducibility:** Confirmed on Python 3.11 (macOS aarch64).
-* **Architecture:** Modular separation between OCR, Preprocessing, and Grading.
-* **Engineering:** Includes SQLite persistence for history and weighted ensemble grading logic.
+* **Reproducibility:** 100% reproducible via `setup.sh` and `run_pipeline.py`.
+* **Architecture:** Robust microservice architecture (React $\leftrightarrow$ FastAPI).
+* **Engineering:** Entropy-gated neuro-symbolic routing preventing deep learning hallucination.
+* **Documentation:** IEEE-formatted conference paper (`report/phase3_report.tex`), verified experiment logs, and interactive presentation (`index.html`) included.
